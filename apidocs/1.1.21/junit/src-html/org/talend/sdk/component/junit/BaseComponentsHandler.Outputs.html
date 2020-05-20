@@ -621,8 +621,8 @@
 <span class="sourceLineNo">613</span>            container<a name="line.613"></a>
 <span class="sourceLineNo">614</span>                    .builder("component-runtime-junit.jar", jarLocation(SimpleCollector.class).getAbsolutePath())<a name="line.614"></a>
 <span class="sourceLineNo">615</span>                    .create();<a name="line.615"></a>
-<span class="sourceLineNo">616</span>            oldInstance = CONTEXTUAL_INSTANCE.get();<a name="line.616"></a>
-<span class="sourceLineNo">617</span>            CONTEXTUAL_INSTANCE.set(this);<a name="line.617"></a>
+<span class="sourceLineNo">616</span>            oldInstance = ComponentManager.contextualInstance().get();<a name="line.616"></a>
+<span class="sourceLineNo">617</span>            ComponentManager.contextualInstance().set(this);<a name="line.617"></a>
 <span class="sourceLineNo">618</span>        }<a name="line.618"></a>
 <span class="sourceLineNo">619</span><a name="line.619"></a>
 <span class="sourceLineNo">620</span>        @Override<a name="line.620"></a>
@@ -630,7 +630,7 @@
 <span class="sourceLineNo">622</span>            try {<a name="line.622"></a>
 <span class="sourceLineNo">623</span>                super.close();<a name="line.623"></a>
 <span class="sourceLineNo">624</span>            } finally {<a name="line.624"></a>
-<span class="sourceLineNo">625</span>                CONTEXTUAL_INSTANCE.compareAndSet(this, oldInstance);<a name="line.625"></a>
+<span class="sourceLineNo">625</span>                ComponentManager.contextualInstance().compareAndSet(this, oldInstance);<a name="line.625"></a>
 <span class="sourceLineNo">626</span>            }<a name="line.626"></a>
 <span class="sourceLineNo">627</span>        }<a name="line.627"></a>
 <span class="sourceLineNo">628</span><a name="line.628"></a>
