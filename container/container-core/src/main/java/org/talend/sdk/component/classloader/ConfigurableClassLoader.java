@@ -42,6 +42,7 @@ import java.nio.file.Path;
 import java.security.CodeSource;
 import java.security.cert.Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -49,6 +50,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.WeakHashMap;
 import java.util.function.Predicate;
 import java.util.jar.JarFile;
@@ -98,6 +100,8 @@ public class ConfigurableClassLoader extends URLClassLoader {
 
     private volatile URLClassLoader temporaryCopy;
 
+    private final URLClassLoader classLoaderFromClasspath;
+
     public ConfigurableClassLoader(final String id, final URL[] urls, final ClassLoader parent,
             final Predicate<String> parentFilter, final Predicate<String> childFirstFilter,
             final String[] nestedDependencies, final String[] jvmPrefixes) {
@@ -123,6 +127,7 @@ public class ConfigurableClassLoader extends URLClassLoader {
                 .of(jvmPrefixes)
                 .filter(it -> Stream.of(this.fullPathJvmPrefixes).noneMatch(it::equals))
                 .toArray(String[]::new);
+        classLoaderFromClasspath = createClassLoaderFromClasspath();
     }
 
     // load all in memory to avoid perf issues - should we try offheap?
@@ -290,6 +295,12 @@ public class ConfigurableClassLoader extends URLClassLoader {
                 if (clazz != null) {
                     return clazz;
                 }
+            }
+
+            // last chance using java defined classpath
+            clazz = classLoaderFromClasspath.loadClass(name);
+            if (clazz != null) {
+                return clazz;
             }
 
             throw new ClassNotFoundException(name);
@@ -794,6 +805,23 @@ public class ConfigurableClassLoader extends URLClassLoader {
             }
         }
         throw iae;
+    }
+
+    private URLClassLoader createClassLoaderFromClasspath() {
+        return new java.net.URLClassLoader(Arrays
+                .stream(System.getProperty("java.class.path", "").split(":"))
+                .filter(cp -> !".".equals(cp))
+                .map(File::new)
+                .filter(File::exists)
+                .map(f -> {
+                    try {
+                        return f.toURL();
+                    } catch (MalformedURLException e) {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .toArray(URL[]::new));
     }
 
     @RequiredArgsConstructor(access = PRIVATE)
