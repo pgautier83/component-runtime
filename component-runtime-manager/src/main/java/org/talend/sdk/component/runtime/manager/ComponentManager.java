@@ -53,6 +53,8 @@ import java.lang.reflect.Proxy;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -185,7 +187,68 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ComponentManager implements AutoCloseable {
 
-    protected static final AtomicReference<ComponentManager> CONTEXTUAL_INSTANCE = new AtomicReference<>();
+    private static class SingletonHolder {
+
+        protected static final AtomicReference<ComponentManager> CONTEXTUAL_INSTANCE = new AtomicReference<>();
+
+        static {
+            final Thread shutdownHook =
+                    new Thread(ComponentManager.class.getName() + "-" + ComponentManager.class.hashCode()) {
+
+                        @Override
+                        public void run() {
+                            ofNullable(CONTEXTUAL_INSTANCE.get()).ifPresent(ComponentManager::close);
+                        }
+                    };
+
+            ComponentManager manager = new ComponentManager(findM2()) {
+
+                private final AtomicBoolean closed = new AtomicBoolean(false);
+
+                {
+
+                    info("Creating the contextual ComponentManager instance " + getIdentifiers());
+
+                    parallelIf(Boolean.getBoolean("talend.component.manager.plugins.parallel"),
+                            container.getDefinedNestedPlugin().stream().filter(p -> !hasPlugin(p)))
+                                    .forEach(this::addPlugin);
+                    info("Components: " + availablePlugins());
+                }
+
+                @Override
+                public void close() {
+                    if (!closed.compareAndSet(false, true)) {
+                        return;
+                    }
+                    try {
+                        synchronized (CONTEXTUAL_INSTANCE) {
+                            if (CONTEXTUAL_INSTANCE.compareAndSet(this, null)) {
+                                try {
+                                    Runtime.getRuntime().removeShutdownHook(shutdownHook);
+                                } catch (final IllegalStateException ise) {
+                                    // already shutting down
+                                }
+                            }
+                        }
+                    } finally {
+                        CONTEXTUAL_INSTANCE.set(null);
+                        super.close();
+                        info("Released the contextual ComponentManager instance " + getIdentifiers());
+                    }
+                }
+
+                Object readResolve() throws ObjectStreamException {
+                    return new SerializationReplacer();
+                }
+            };
+
+            Runtime.getRuntime().addShutdownHook(shutdownHook);
+            manager.info("Created the contextual ComponentManager instance " + getIdentifiers());
+            if (!CONTEXTUAL_INSTANCE.compareAndSet(null, manager)) { // unlikely it fails in a synch block
+                manager = CONTEXTUAL_INSTANCE.get();
+            }
+        }
+    }
 
     private static final Components DEFAULT_COMPONENT = new Components() {
 
@@ -276,6 +339,10 @@ public class ComponentManager implements AutoCloseable {
     private final List<ContainerClasspathContributor> classpathContributors;
 
     private final IconFinder iconFinder = new IconFinder();
+
+    public ComponentManager(final File m2) {
+        this(m2, "TALEND-INF/dependencies.txt", "org.talend.sdk.component:type=component,value=%s");
+    }
 
     /**
      * @param m2 the maven repository location if on the file system.
@@ -420,71 +487,16 @@ public class ComponentManager implements AutoCloseable {
      * @return the contextual manager instance.
      */
     public static ComponentManager instance() {
-        ComponentManager manager = CONTEXTUAL_INSTANCE.get();
-        if (manager == null) {
-            synchronized (CONTEXTUAL_INSTANCE) {
-                if (CONTEXTUAL_INSTANCE.get() == null) {
-                    final Thread shutdownHook =
-                            new Thread(ComponentManager.class.getName() + "-" + ComponentManager.class.hashCode()) {
+        return SingletonHolder.CONTEXTUAL_INSTANCE.get();
+    }
 
-                                @Override
-                                public void run() {
-                                    ofNullable(CONTEXTUAL_INSTANCE.get()).ifPresent(ComponentManager::close);
-                                }
-                            };
-
-                    manager = new ComponentManager(findM2(), "TALEND-INF/dependencies.txt",
-                            "org.talend.sdk.component:type=component,value=%s") {
-
-                        private final AtomicBoolean closed = new AtomicBoolean(false);
-
-                        {
-
-                            info("Creating the contextual ComponentManager instance " + getIdentifiers());
-
-                            parallelIf(Boolean.getBoolean("talend.component.manager.plugins.parallel"),
-                                    container.getDefinedNestedPlugin().stream().filter(p -> !hasPlugin(p)))
-                                            .forEach(this::addPlugin);
-                            info("Components: " + availablePlugins());
-                        }
-
-                        @Override
-                        public void close() {
-                            if (!closed.compareAndSet(false, true)) {
-                                return;
-                            }
-                            try {
-                                synchronized (CONTEXTUAL_INSTANCE) {
-                                    if (CONTEXTUAL_INSTANCE.compareAndSet(this, null)) {
-                                        try {
-                                            Runtime.getRuntime().removeShutdownHook(shutdownHook);
-                                        } catch (final IllegalStateException ise) {
-                                            // already shutting down
-                                        }
-                                    }
-                                }
-                            } finally {
-                                CONTEXTUAL_INSTANCE.set(null);
-                                super.close();
-                                info("Released the contextual ComponentManager instance " + getIdentifiers());
-                            }
-                        }
-
-                        Object readResolve() throws ObjectStreamException {
-                            return new SerializationReplacer();
-                        }
-                    };
-
-                    Runtime.getRuntime().addShutdownHook(shutdownHook);
-                    manager.info("Created the contextual ComponentManager instance " + getIdentifiers());
-                    if (!CONTEXTUAL_INSTANCE.compareAndSet(null, manager)) { // unlikely it fails in a synch block
-                        manager = CONTEXTUAL_INSTANCE.get();
-                    }
-                }
-            }
-        }
-
-        return manager;
+    /**
+     * For test purpose only.
+     *
+     * @return
+     */
+    protected static AtomicReference<ComponentManager> contextualInstance() {
+        return SingletonHolder.CONTEXTUAL_INSTANCE;
     }
 
     private static <T> Stream<T> parallelIf(final boolean condition, final Stream<T> stringStream) {
@@ -513,25 +525,30 @@ public class ComponentManager implements AutoCloseable {
     }
 
     protected static File findM2() {
-        return ofNullable(System.getProperty("talend.component.manager.m2.repository")).map(File::new).orElseGet(() -> {
-            // check if we are in the studio process if so just grab the the studio config
-            final String m2Repo = System.getProperty("maven.repository");
-            if (!"global".equals(m2Repo)) {
-                { // this shouldn't exist in recent studio
-                    final File localM2 = new File(System.getProperty("osgi.configuration.area"), ".m2");
-                    if (localM2.exists()) {
-                        return localM2;
+        return ofNullable(System.getProperty("talend.component.manager.m2.repository"))
+                .map(m2 -> {
+                    // jobServer may badly translate paths on Windows
+                    try {
+                        return Paths.get(m2).toFile();
+                    } catch (Exception e) {
+                        return findStudioM2();
                     }
-                }
-                {
-                    final File localM2 = new File(System.getProperty("osgi.configuration.area"), ".m2/repository");
-                    if (localM2.exists()) {
-                        return localM2;
-                    }
-                }
+                })
+                .orElseGet(() -> {
+                    return findStudioM2();
+                });
+    }
+
+    private static File findStudioM2() {
+        // check if we are in the studio process if so just grab the the studio config
+        final String m2Repo = System.getProperty("maven.repository");
+        if (!"global".equals(m2Repo)) {
+            final Path localM2 = Paths.get(System.getProperty("osgi.configuration.area", "")).resolve(".m2/repository");
+            if (java.nio.file.Files.exists(localM2)) {
+                return localM2.toFile();
             }
-            return findDefaultM2();
-        });
+        }
+        return findDefaultM2();
     }
 
     private static File findDefaultM2() {
@@ -804,7 +821,7 @@ public class ComponentManager implements AutoCloseable {
         return container.find(plugin);
     }
 
-    public String addPlugin(final String pluginRootFile) {
+    public synchronized String addPlugin(final String pluginRootFile) {
         final String id = this.container
                 .builder(pluginRootFile)
                 .withCustomizer(createContainerCustomizer(pluginRootFile))
@@ -1919,10 +1936,10 @@ public class ComponentManager implements AutoCloseable {
 
         /**
          * Enables a customizer to know other configuration.
-         * 
-         * @deprecated Mainly here for backward compatibility for beam customizer.
          *
          * @param customizers all customizers.
+         *
+         * @deprecated Mainly here for backward compatibility for beam customizer.
          */
         @Deprecated
         default void setCustomizers(final Collection<Customizer> customizers) {
