@@ -4,18 +4,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Talend Component Kit Developer Reference Guide :: Testing components</title>
-    <link rel="canonical" href="https://talend.github.io/component-runtime/main/1.29.0/pdf-testing-components.html">
+    <link rel="canonical" href="https://talend.github.io/component-runtime/main/1.30.0/pdf-testing-components.html">
     <meta name="description" content="Learn how to test your component logic in the environment you need using Talend Component Kit">
     <meta name="keywords" content="test, overview, environment, beam, runtime">
     <meta name="generator" content="Talend Component Kit Generator">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Testing components :: Talend Component Kit Developer Reference Guide</title>
-    <link rel="canonical" href="https://talend.github.io/component-runtime/main/1.29.0/pdf-testing-components.html">
+    <link rel="canonical" href="https://talend.github.io/component-runtime/main/1.30.0/pdf-testing-components.html">
     <meta name="description" content="Learn how to test your component logic in the environment you need using Talend Component Kit">
     <meta name="keywords" content="test, overview, environment, beam, runtime">
     <meta name="generator" content="Antora 2.2.0">
-<meta name="date" content="2021-01-11T08:57:32.398Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
+<meta name="date" content="2021-01-13T13:45:31.053Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/idea.min.css" integrity="sha256-rD61BPsgKHzJPyg7vpXaYOw6tMYuY2fz1p9033NYeM8=" crossorigin="anonymous" />
@@ -87,12 +87,18 @@
         <a class="navbar-single-link" href="index.html">Talend Component Kit</a>
         <div class="btn-group navbar-versions">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                1.29.0 (dev)
+                1.29.0
               <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
                 <li class="navbar-item version">
+                    <a href="../1.30.0/index.html">1.30.0</a>
+                </li>
+                <li class="navbar-item version">
                     <a href="index.html">1.29.0</a>
+                </li>
+                <li class="navbar-item version">
+                    <a href="../1.28.1/index.html">1.28.1</a>
                 </li>
                 <li class="navbar-item version">
                     <a href="../1.28.0/index.html">1.28.0</a>
@@ -845,7 +851,7 @@ The rule can also be defined as a <code>@ClassRule</code> to start it once per c
 </table>
 </div>
 <div class="paragraph">
-<p>To go further, you can add the <code>ServiceInjectionRule</code> rule, which allows to inject all the component family services into the test class by marking test class fields with <code>@InjectService</code>:</p>
+<p>To go further, you can add the <code>ServiceInjectionRule</code> rule, which allows to inject all the component family services into the test class by marking test class fields with <code>@Service</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -945,7 +951,7 @@ Some IDE versions and <code>surefire</code> versions can also require you to ins
 </table>
 </div>
 <div class="paragraph">
-<p>As for JUnit 4, you can go further by injecting test class fields marked with <code>@InjectService</code>, but there is no additional extension to specify in this case:</p>
+<p>As for JUnit 4, you can go further by injecting test class fields marked with <code>@Service</code>, but there is no additional extension to specify in this case:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2362,20 +2368,20 @@ You can use <code>ViewsMappingTransform</code> or <code>CoGroupByKeyResultMappin
 
                 <ul>
                     <li>
-                      <a class="article-side-actions-link" target="_blank" href="https://github.com/Talend/component-runtime/edit/master/documentation/src/main/antora/modules/ROOT/pages/pdf-testing-components.adoc">
+                      <a class="article-side-actions-link" target="_blank" href="https://github.com/Talend/component-runtime/blob/component-runtime-1.29.0/documentation/src/main/antora/modules/ROOT/pages/pdf-testing-components.adoc">
                         <i class="fa fa-edit"></i> &nbsp; &nbsp; Suggest an edit
                       </a>
                     </li>
 
                     <li>
                                 <a class="article-side-actions-link" target="_blank"
-                                   href="https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Ftalend.github.io%2Fcomponent-runtime%2Fmain%2F1.29.0%2Fpdf-testing-components.html&text=Talend%20Component%20Kit%20%3E%3E%20Testing%20components%20%3E%3E%20&tw_p=tweetbutton&url=https%3A%2F%2Ftalend.github.io%2Fcomponent-runtime%2Fmain%2F1.29.0%2Fpdf-testing-components.html">
+                                   href="https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Ftalend.github.io%2Fcomponent-runtime%2Fmain%2F1.30.0%2Fpdf-testing-components.html&text=Talend%20Component%20Kit%20%3E%3E%20Testing%20components%20%3E%3E%20&tw_p=tweetbutton&url=https%3A%2F%2Ftalend.github.io%2Fcomponent-runtime%2Fmain%2F1.30.0%2Fpdf-testing-components.html">
                                     <i class="fab fa-twitter"></i> &nbsp; &nbsp; Tweet
                                 </a>
                             </li>
                             <li>
                                 <a class="article-side-actions-link"
-                                   href="mailto:?subject=Talend%20Component%20Kit%3A%20Testing%20components&body=Talend%20Component%20Kit%3A%20Testing%20components%0A%0Ahttps%3A%2F%2Ftalend.github.io%2Fcomponent-runtime%2Fmain%2F1.29.0%2Fpdf-testing-components.html">
+                                   href="mailto:?subject=Talend%20Component%20Kit%3A%20Testing%20components&body=Talend%20Component%20Kit%3A%20Testing%20components%0A%0Ahttps%3A%2F%2Ftalend.github.io%2Fcomponent-runtime%2Fmain%2F1.30.0%2Fpdf-testing-components.html">
                                     <i class="far fa-envelope"></i> &nbsp; &nbsp; Mail
                                 </a>
                             </li>
