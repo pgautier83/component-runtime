@@ -6,16 +6,16 @@
     <title>Talend Component Kit Developer Reference Guide :: Studio schema</title>
     <link rel="canonical" href="https://talend.github.io/component-runtime/main/1.30.0/studio-schema.html">
     <meta name="description" content="How to access studio&#x27;s schema in your component.">
-    <meta name="keywords" content="studio, schema, metadata, columns">
+    <meta name="keywords" content="studio, schema, metadata, dynamic, columns">
     <meta name="generator" content="Talend Component Kit Generator">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Studio schema :: Talend Component Kit Developer Reference Guide</title>
     <link rel="canonical" href="https://talend.github.io/component-runtime/main/1.30.0/studio-schema.html">
     <meta name="description" content="How to access studio&#x27;s schema in your component.">
-    <meta name="keywords" content="studio, schema, metadata, columns">
+    <meta name="keywords" content="studio, schema, metadata, dynamic, columns">
     <meta name="generator" content="Antora 2.2.0">
-<meta name="date" content="2021-01-14T16:36:51.637Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
+<meta name="date" content="2021-01-18T18:29:24.723Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/idea.min.css" integrity="sha256-rD61BPsgKHzJPyg7vpXaYOw6tMYuY2fz1p9033NYeM8=" crossorigin="anonymous" />
@@ -539,7 +539,28 @@
           <div class="col-sm-9 row">
               <h1>Studio schema</h1>
             <div class="article-content">
-              <div id="preamble">
+              <div class="sect1">
+<h2 id="_dynamic_schema"><a class="anchor" href="#_dynamic_schema"></a>Dynamic schema</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Since the <code>1.1.25</code> release, the <a href="https://help.talend.com/r/nsbWWUnRtCUlvlMLhaJZsQ/KLZ5B7Qk02XbA~~RvgL3xw">dynamic column</a> feature is supported in Studio with component-runtime components.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Dynamic column is available with Enterprise versions of Talend Studio only.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_accessing_columns_metadata"><a class="anchor" href="#_accessing_columns_metadata"></a>Accessing columns metadata</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In Studio, we can define for each component a schema with associated metadata.</p>
@@ -552,11 +573,9 @@
 <div class="paragraph">
 <p>To access those informations in your component, you&#8217;ve to do a few things:</p>
 </div>
+<div class="paragraph">
+<p>Using the <code>@Structure</code> annotation</p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_using_the_structure_annotation"><a class="anchor" href="#_using_the_structure_annotation"></a>Using the <code>@Structure</code> annotation</h2>
-<div class="sectionbody">
 <div class="ulist">
 <ul>
 <li>
@@ -622,13 +641,9 @@ Use <code>Structure.Type.OUT</code> for outgoing flow (Input).</td>
 <div class="paragraph">
 <p>Then, we should have a class <code>SchemaInfo</code> as following:</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_defining_a_specific_class_for_holding_metadata"><a class="anchor" href="#_defining_a_specific_class_for_holding_metadata"></a>Defining a specific class for holding metadata</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>If you don&#8217;t want just only column names (using <code>List&lt;String&gt;</code>), you&#8217;ll have to define a custom class.</p>
+<p>Defining a specific class for holding metadata
+If you don&#8217;t want just only column names (using <code>List&lt;String&gt;</code>), you&#8217;ll have to define a custom class.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -659,11 +674,9 @@ public class SchemaInfo implements Serializable {
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Available Studio metadata informations</p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_available_studio_metadata_informations"><a class="anchor" href="#_available_studio_metadata_informations"></a>Available Studio metadata informations</h2>
-<div class="sectionbody">
 <table class="tableblock frame-all grid-all stretch table-striped table-hover table-ordered">
 <colgroup>
 <col style="width: 33.3333%;">
