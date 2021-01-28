@@ -68,7 +68,7 @@
 <span class="sourceLineNo">060</span>     * @param name entry name.<a name="line.60"></a>
 <span class="sourceLineNo">061</span>     * @return the value of the entry in this record.<a name="line.61"></a>
 <span class="sourceLineNo">062</span>     */<a name="line.62"></a>
-<span class="sourceLineNo">063</span>    default int getInt(final String name) {<a name="line.63"></a>
+<span class="sourceLineNo">063</span>    default Integer getInt(final String name) {<a name="line.63"></a>
 <span class="sourceLineNo">064</span>        return get(Integer.class, name);<a name="line.64"></a>
 <span class="sourceLineNo">065</span>    }<a name="line.65"></a>
 <span class="sourceLineNo">066</span><a name="line.66"></a>
@@ -78,7 +78,7 @@
 <span class="sourceLineNo">070</span>     * @param name entry name.<a name="line.70"></a>
 <span class="sourceLineNo">071</span>     * @return the value of the entry in this record.<a name="line.71"></a>
 <span class="sourceLineNo">072</span>     */<a name="line.72"></a>
-<span class="sourceLineNo">073</span>    default long getLong(final String name) {<a name="line.73"></a>
+<span class="sourceLineNo">073</span>    default Long getLong(final String name) {<a name="line.73"></a>
 <span class="sourceLineNo">074</span>        return get(Long.class, name);<a name="line.74"></a>
 <span class="sourceLineNo">075</span>    }<a name="line.75"></a>
 <span class="sourceLineNo">076</span><a name="line.76"></a>
@@ -88,7 +88,7 @@
 <span class="sourceLineNo">080</span>     * @param name entry name.<a name="line.80"></a>
 <span class="sourceLineNo">081</span>     * @return the value of the entry in this record.<a name="line.81"></a>
 <span class="sourceLineNo">082</span>     */<a name="line.82"></a>
-<span class="sourceLineNo">083</span>    default double getDouble(final String name) {<a name="line.83"></a>
+<span class="sourceLineNo">083</span>    default Double getDouble(final String name) {<a name="line.83"></a>
 <span class="sourceLineNo">084</span>        return get(Double.class, name);<a name="line.84"></a>
 <span class="sourceLineNo">085</span>    }<a name="line.85"></a>
 <span class="sourceLineNo">086</span><a name="line.86"></a>
@@ -98,7 +98,7 @@
 <span class="sourceLineNo">090</span>     * @param name entry name.<a name="line.90"></a>
 <span class="sourceLineNo">091</span>     * @return the value of the entry in this record.<a name="line.91"></a>
 <span class="sourceLineNo">092</span>     */<a name="line.92"></a>
-<span class="sourceLineNo">093</span>    default float getFloat(final String name) {<a name="line.93"></a>
+<span class="sourceLineNo">093</span>    default Float getFloat(final String name) {<a name="line.93"></a>
 <span class="sourceLineNo">094</span>        return get(Float.class, name);<a name="line.94"></a>
 <span class="sourceLineNo">095</span>    }<a name="line.95"></a>
 <span class="sourceLineNo">096</span><a name="line.96"></a>
@@ -108,7 +108,7 @@
 <span class="sourceLineNo">100</span>     * @param name entry name.<a name="line.100"></a>
 <span class="sourceLineNo">101</span>     * @return the value of the entry in this record.<a name="line.101"></a>
 <span class="sourceLineNo">102</span>     */<a name="line.102"></a>
-<span class="sourceLineNo">103</span>    default boolean getBoolean(final String name) {<a name="line.103"></a>
+<span class="sourceLineNo">103</span>    default Boolean getBoolean(final String name) {<a name="line.103"></a>
 <span class="sourceLineNo">104</span>        return get(Boolean.class, name);<a name="line.104"></a>
 <span class="sourceLineNo">105</span>    }<a name="line.105"></a>
 <span class="sourceLineNo">106</span><a name="line.106"></a>
@@ -284,29 +284,29 @@
 <span class="sourceLineNo">276</span><a name="line.276"></a>
 <span class="sourceLineNo">277</span>        Builder withDateTime(Schema.Entry entry, ZonedDateTime value);<a name="line.277"></a>
 <span class="sourceLineNo">278</span><a name="line.278"></a>
-<span class="sourceLineNo">279</span>        Builder withTimestamp(String name, long value);<a name="line.279"></a>
+<span class="sourceLineNo">279</span>        Builder withTimestamp(String name, Long value);<a name="line.279"></a>
 <span class="sourceLineNo">280</span><a name="line.280"></a>
-<span class="sourceLineNo">281</span>        Builder withTimestamp(Schema.Entry entry, long value);<a name="line.281"></a>
+<span class="sourceLineNo">281</span>        Builder withTimestamp(Schema.Entry entry, Long value);<a name="line.281"></a>
 <span class="sourceLineNo">282</span><a name="line.282"></a>
-<span class="sourceLineNo">283</span>        Builder withInt(String name, int value);<a name="line.283"></a>
+<span class="sourceLineNo">283</span>        Builder withInt(String name, Integer value);<a name="line.283"></a>
 <span class="sourceLineNo">284</span><a name="line.284"></a>
-<span class="sourceLineNo">285</span>        Builder withInt(Schema.Entry entry, int value);<a name="line.285"></a>
+<span class="sourceLineNo">285</span>        Builder withInt(Schema.Entry entry, Integer value);<a name="line.285"></a>
 <span class="sourceLineNo">286</span><a name="line.286"></a>
-<span class="sourceLineNo">287</span>        Builder withLong(String name, long value);<a name="line.287"></a>
+<span class="sourceLineNo">287</span>        Builder withLong(String name, Long value);<a name="line.287"></a>
 <span class="sourceLineNo">288</span><a name="line.288"></a>
-<span class="sourceLineNo">289</span>        Builder withLong(Schema.Entry entry, long value);<a name="line.289"></a>
+<span class="sourceLineNo">289</span>        Builder withLong(Schema.Entry entry, Long value);<a name="line.289"></a>
 <span class="sourceLineNo">290</span><a name="line.290"></a>
-<span class="sourceLineNo">291</span>        Builder withFloat(String name, float value);<a name="line.291"></a>
+<span class="sourceLineNo">291</span>        Builder withFloat(String name, Float value);<a name="line.291"></a>
 <span class="sourceLineNo">292</span><a name="line.292"></a>
-<span class="sourceLineNo">293</span>        Builder withFloat(Schema.Entry entry, float value);<a name="line.293"></a>
+<span class="sourceLineNo">293</span>        Builder withFloat(Schema.Entry entry, Float value);<a name="line.293"></a>
 <span class="sourceLineNo">294</span><a name="line.294"></a>
-<span class="sourceLineNo">295</span>        Builder withDouble(String name, double value);<a name="line.295"></a>
+<span class="sourceLineNo">295</span>        Builder withDouble(String name, Double value);<a name="line.295"></a>
 <span class="sourceLineNo">296</span><a name="line.296"></a>
-<span class="sourceLineNo">297</span>        Builder withDouble(Schema.Entry entry, double value);<a name="line.297"></a>
+<span class="sourceLineNo">297</span>        Builder withDouble(Schema.Entry entry, Double value);<a name="line.297"></a>
 <span class="sourceLineNo">298</span><a name="line.298"></a>
-<span class="sourceLineNo">299</span>        Builder withBoolean(String name, boolean value);<a name="line.299"></a>
+<span class="sourceLineNo">299</span>        Builder withBoolean(String name, Boolean value);<a name="line.299"></a>
 <span class="sourceLineNo">300</span><a name="line.300"></a>
-<span class="sourceLineNo">301</span>        Builder withBoolean(Schema.Entry entry, boolean value);<a name="line.301"></a>
+<span class="sourceLineNo">301</span>        Builder withBoolean(Schema.Entry entry, Boolean value);<a name="line.301"></a>
 <span class="sourceLineNo">302</span><a name="line.302"></a>
 <span class="sourceLineNo">303</span>        Builder withRecord(Schema.Entry entry, Record value);<a name="line.303"></a>
 <span class="sourceLineNo">304</span><a name="line.304"></a>

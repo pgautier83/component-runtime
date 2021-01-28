@@ -15,7 +15,7 @@
     <meta name="description" content="Get an overview of the main steps to code the logic of your custom Talend Componit Kit components">
     <meta name="keywords" content="create, code, class, logic, layout, configuration, dev, overview">
     <meta name="generator" content="Antora 2.2.0">
-<meta name="date" content="2021-01-26T10:11:35.373Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
+<meta name="date" content="2021-01-28T18:08:22.878Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/idea.min.css" integrity="sha256-rD61BPsgKHzJPyg7vpXaYOw6tMYuY2fz1p9033NYeM8=" crossorigin="anonymous" />
@@ -832,6 +832,29 @@ public class MyInput {
 public class MyProcessor {
 }</code></pre>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_component_extra_metadatas"><a class="anchor" href="#_component_extra_metadatas"></a>Component extra metadatas</h3>
+<div class="paragraph">
+<p>For any purpose, you can also add user defined metadatas to your component with the <code>@Metadatas</code> annotation.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>@Processor(name = "my_processor")
+@Metadatas({
+        @Metadata(key = "user::value0", value = "myValue0"),
+        @Metadata(key = "user::value1", value = "myValue1")
+})
+public class MyProcessor {
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also use a SPI implementing <code>org.talend.sdk.component.spi.component.ComponentMetadataEnricher</code>.</p>
 </div>
 </div>
 <div class="sect2 relatedlinks">
