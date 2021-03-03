@@ -11,7 +11,7 @@
     <title>List of available actions :: Talend Component Kit Developer Reference Guide</title>
     <link rel="canonical" href="https://talend.github.io/component-runtime/main/1.31.0/ref-actions.html">
     <meta name="generator" content="Antora 2.2.0">
-<meta name="date" content="2021-02-23T08:25:42.972Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
+<meta name="date" content="2021-03-03T11:28:34.630Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/idea.min.css" integrity="sha256-rD61BPsgKHzJPyg7vpXaYOw6tMYuY2fz1p9033NYeM8=" crossorigin="anonymous" />
@@ -542,6 +542,37 @@
 <div class="sectionbody">
 <div class="paragraph">
 <p>Some common actions need a clear contract so they are defined as API first-class citizen. For example, this is the case for wizards or health checks. Here is the list of the available actions:</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_discoverdataset"><a class="anchor" href="#_discoverdataset"></a>Discoverdataset</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This class marks an action that explore a connection to retrieve potential datasets.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Type: <code>discoverdataset</code></p>
+</li>
+<li>
+<p>API: <code>@org.talend.sdk.component.api.service.discovery.DiscoverDataset</code></p>
+</li>
+<li>
+<p>Returned type: <code>org.talend.sdk.component.api.service.discovery.DiscoverDatasetResult</code></p>
+</li>
+<li>
+<p>Sample:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">{
+ "datasetDescriptionList": "..."
+}</code></pre>
+</div>
 </div>
 </div>
 </div>

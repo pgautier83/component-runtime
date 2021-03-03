@@ -25,6 +25,7 @@ org.talend.sdk.component.api.service.cache
 org.talend.sdk.component.api.service.completion
 org.talend.sdk.component.api.service.configuration
 org.talend.sdk.component.api.service.dependency
+org.talend.sdk.component.api.service.discovery
 org.talend.sdk.component.api.service.factory
 org.talend.sdk.component.api.service.healthcheck
 org.talend.sdk.component.api.service.http
