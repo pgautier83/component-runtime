@@ -11,7 +11,7 @@
     <title>Talend Component Kit Developer Guide :: Talend Component Kit Developer Reference Guide</title>
     <link rel="canonical" href="https://talend.github.io/component-runtime/main/1.32.0/all-in-one.html">
     <meta name="generator" content="Antora 2.2.0">
-<meta name="date" content="2021-03-17T11:48:09.090Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
+<meta name="date" content="2021-03-17T12:45:00.778Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/idea.min.css" integrity="sha256-rD61BPsgKHzJPyg7vpXaYOw6tMYuY2fz1p9033NYeM8=" crossorigin="anonymous" />
@@ -10541,7 +10541,7 @@ to avoid to transport more than desired during the job distribution.
 <p>The <code>HttpClient</code> interface lets you set the <code>base</code> for the HTTP address that the client will hit.</p>
 </div>
 <div class="paragraph">
-<p>The <code>base</code> is the part of the address that needs to be added to the request path to hit the API.</p>
+<p>The <code>base</code> is the part of the address that needs to be added to the request path to hit the API. It is now possible, and recommended, to use @Base annotation.</p>
 </div>
 <div class="paragraph">
 <p>Every method annotated with <code>@Request</code> in the interface defines an HTTP request.
@@ -10565,6 +10565,11 @@ You can ignore the encoding/decoding for <code>String</code> and <code>Void</cod
     @Request(path = "api/records/{id}", method = "GET")
     @Codec(decoder = RecordDecoder.class) //decoder =  decode returned data to Record class
     Record getRecord(@Header("Authorization") String basicAuth, @Path("id") int id);
+
+    /** same with base as parameter */
+    @Request(path = "api/records/{id}", method = "GET")
+    @Codec(decoder = RecordDecoder.class) //decoder =  decode returned data to Record class
+    Record getRecord(@Header("Authorization") String basicAuth, @Base String base, @Path("id") int id);
 
     @Request(path = "api/records", method = "POST")
     @Codec(encoder = RecordEncoder.class, decoder = RecordDecoder.class) //encoder = encode record to fit request format (json in this example)
@@ -10607,6 +10612,8 @@ public class MyService {
     //...
     // Our get request
     Record rec =  client.getRecord("Basic MLFKG?VKFJ", 100);
+    // or
+    Record rec1 =  client.getRecord("Basic MLFKG?VKFJ", "http://localhost:8080", 100);
 
     //...
     // Our post request
