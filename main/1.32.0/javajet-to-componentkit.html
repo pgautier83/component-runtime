@@ -15,7 +15,7 @@
     <meta name="description" content="The Javajet framework is being replaced by the new Talend Component Kit. Learn the main differences and the new approach introduced with this framework.">
     <meta name="keywords" content="javajet, studio, learning, getting started, principles">
     <meta name="generator" content="Antora 2.2.0">
-<meta name="date" content="2021-03-18T09:34:58.232Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
+<meta name="date" content="2021-03-18T12:05:22.159Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/idea.min.css" integrity="sha256-rD61BPsgKHzJPyg7vpXaYOw6tMYuY2fz1p9033NYeM8=" crossorigin="anonymous" />
@@ -1017,6 +1017,59 @@ private String login;
 @Documentation("password for the basic authentication")
 private String password;</code></pre>
 </div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_after_variables"><a class="anchor" href="#_after_variables"></a>After Variables</h3>
+<div class="paragraph">
+<p>Javajet</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-XML hljs" data-lang="XML">   &lt;RETURN NAME="NAME_1_OF_AFTER_VARIABLE" TYPE="id_Integer" AVAILABILITY="AFTER"/&gt;
+   &lt;RETURN NAME="NAME_2_OF_AFTER_VARIABLE" TYPE="id_String" AVAILABILITY="AFTER"/&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Component Kit</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.talend.sdk.component.api.component.AfterVariables.AfterVariableContainer;
+import org.talend.sdk.component.api.component.AfterVariables.AfterVariable;
+
+@AfterVariable(value = "NAME_1_OF_AFTER_VARIABLE", description = "Some description", type = Integer.class)
+@AfterVariable(value = "NAME_2_OF_AFTER_VARIABLE", description = "Custom variable description", type = String.class)
+class Emitter {
+
+    @AfterVariableContainer
+    public Map&lt;String, Object&gt; afterVariables() {
+        // .. code
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>or</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.talend.sdk.component.api.component.AfterVariables.AfterVariableContainer;
+import org.talend.sdk.component.api.component.AfterVariables.AfterVariable;
+import org.talend.sdk.component.api.component.AfterVariables;
+
+@AfterVariables({
+    @AfterVariable(value = "NAME_1_OF_AFTER_VARIABLE", description = "Some description", type = Integer.class),
+    @AfterVariable(value = "NAME_2_OF_AFTER_VARIABLE", description = "Custom variable description", type = String.class)
+})
+class Emitter {
+    @AfterVariableContainer
+    public Map&lt;String, Object&gt; afterVariables() {
+        // .. code
+    }
+}</code></pre>
 </div>
 </div>
 </div>
