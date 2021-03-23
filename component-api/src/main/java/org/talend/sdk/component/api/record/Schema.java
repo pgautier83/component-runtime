@@ -57,7 +57,7 @@ public interface Schema {
     Map<String, String> getProps();
 
     /**
-     * @param property
+     * @param property : property name.
      * @return the requested metadata prop
      */
     String getProp(String property);
@@ -124,7 +124,7 @@ public interface Schema {
         Map<String, String> getProps();
 
         /**
-         * @param property
+         * @param property : property name.
          * @return the requested metadata prop
          */
         String getProp(String property);
