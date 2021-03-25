@@ -13,6 +13,7 @@ org.talend.sdk.component.api.configuration.ui
 org.talend.sdk.component.api.configuration.ui.layout
 org.talend.sdk.component.api.configuration.ui.meta
 org.talend.sdk.component.api.configuration.ui.widget
+org.talend.sdk.component.api.context
 org.talend.sdk.component.api.exception
 org.talend.sdk.component.api.input
 org.talend.sdk.component.api.internationalization
@@ -24,6 +25,7 @@ org.talend.sdk.component.api.service.asyncvalidation
 org.talend.sdk.component.api.service.cache
 org.talend.sdk.component.api.service.completion
 org.talend.sdk.component.api.service.configuration
+org.talend.sdk.component.api.service.connection
 org.talend.sdk.component.api.service.dependency
 org.talend.sdk.component.api.service.discovery
 org.talend.sdk.component.api.service.factory
