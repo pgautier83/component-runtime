@@ -15,21 +15,16 @@
  */
 package org.talend.sdk.component.api.service.connection;
 
-import org.talend.sdk.component.api.exception.ComponentException;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-// as we can't pass the connection object to service as parameter auto, so we need this helper object to pass connection
-// and close it
-@Data
-@NoArgsConstructor
-public abstract class CloseConnectionObject {
+import org.talend.sdk.component.api.meta.Documentation;
 
-    @Connection
-    protected Object connection;
-
-    // implement it and can get connection object like this : (java.sql.Connection)(runtimeContext.getConnection());
-    public abstract boolean close() throws ComponentException;
-
+@Target(FIELD)
+@Retention(RUNTIME)
+@Documentation("Auto inject the connection to field, The functionality is for the Studio only.")
+public @interface Connection {
 }
