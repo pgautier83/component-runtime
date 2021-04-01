@@ -15,7 +15,7 @@
     <meta name="description" content="How to develop an output component with Talend Component Kit">
     <meta name="keywords" content="output, processor">
     <meta name="generator" content="Antora 2.2.0">
-<meta name="date" content="2021-04-01T17:57:02.440Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
+<meta name="date" content="2021-04-01T20:38:24.941Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/idea.min.css" integrity="sha256-rD61BPsgKHzJPyg7vpXaYOw6tMYuY2fz1p9033NYeM8=" crossorigin="anonymous" />
@@ -746,7 +746,7 @@ public MyNewData map(@Input final MyData data, @Input("input2") final MyData2 da
 <p>By default, the execution environment of a component automatically decides how to process groups of records and estimates an optimal group size depending on the system capacity. With this default behavior, the size of each group could sometimes be optimized for the system to handle the load more effectively or to match business requirements.</p>
 </div>
 <div class="paragraph">
-<p>For example, real-time or near-real time processing needs often imply processing smaller batches of data, but more often. On the other hand, a one-time processing without business contraints is more effectively handled with a batch size based on the system capacity.</p>
+<p>For example, real-time or near real-time processing needs often imply processing smaller batches of data, but more often. On the other hand, a one-time processing without business contraints is more effectively handled with a batch size based on the system capacity.</p>
 </div>
 <div class="paragraph">
 <p>Final users of a component developed with the Talend Component Kit that integrates the batch processing logic described in this document can override this automatic size. To do that, a <code>maxBatchSize</code> option is available in the component settings and allows to set the maximum size of each group of data to process.</p>
