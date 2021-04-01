@@ -15,7 +15,7 @@
     <meta name="description" content="Create your first component using Talend Component Kit and integrate it to Talend Open Studio to build a job">
     <meta name="keywords" content="first, start, Studio, integration, palette">
     <meta name="generator" content="Antora 2.2.0">
-<meta name="date" content="2021-04-01T14:02:44.660Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
+<meta name="date" content="2021-04-01T15:04:27.523Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/idea.min.css" integrity="sha256-rD61BPsgKHzJPyg7vpXaYOw6tMYuY2fz1p9033NYeM8=" crossorigin="anonymous" />
@@ -548,19 +548,16 @@
               <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>This tutorial walks you through all the required steps to get started with <strong>Talend Component Kit</strong>, from the creation of a simple component to its integration into <strong>Talend Open Studio</strong>.</p>
+<p>This tutorial walks you through the most common iteration steps to create a component with <strong>Talend Component Kit</strong> and to deploy it to <strong>Talend Open Studio</strong>.</p>
 </div>
 <div class="paragraph">
-<p>The component created in this tutorial is a simple processor component that receives data from the previous component and displays it in the logs, along with an extra information entered by a user.</p>
+<p>The component created in this tutorial is a simple processor that reads data coming from the previous component in a job or pipeline and displays it in the console logs of the application, along with an additional information entered by the final user.</p>
 </div>
-<div class="paragraph">
-<p>Once the prerequisites completed, this tutorial should take you about 20 minutes.</p>
-</div>
-<div class="admonitionblock important">
+<div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-important" title="Important"></i>
+<i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
 The component designed in this tutorial is a processor and does not require nor show any <a href="component-configuration.html#dataset-and-datastore" class="page">datastore and dataset</a> configuration. Datasets and datastores are required only for input and output components.
@@ -579,7 +576,7 @@ The component designed in this tutorial is a processor and does not require nor 
 <h2 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This tutorial aims at helping you to create your very first component. But before, get your development environment ready:</p>
+<p>To get your development environment ready and be able to follow this tutorial:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -600,10 +597,10 @@ The component designed in this tutorial is a processor and does not require nor 
 </div>
 </div>
 <div class="sect1">
-<h2 id="_generating_a_simple_component_project"><a class="anchor" href="#_generating_a_simple_component_project"></a>Generating a simple component project</h2>
+<h2 id="_generate_a_component_project"><a class="anchor" href="#_generate_a_component_project"></a>Generate a component project</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The first step in this tutorial is to generate a project containing a simple output component using the <strong>Starter</strong> included in the Talend Component Kit plugin for IntelliJ.</p>
+<p>The first step in this tutorial is to generate a component skeleton using the <strong>Starter</strong> embedded in the Talend Component Kit plugin for IntelliJ.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -620,7 +617,7 @@ The component designed in this tutorial is a processor and does not require nor 
 The <strong>Talend Component Kit Starter</strong> opens.</p>
 </li>
 <li>
-<p>Enter the project details. The goal here is to define the component and project metadata. Change the default values as follows:<br></p>
+<p>Enter the component and project metadata. Change the default values, for example as presented in the screenshot below:<br></p>
 <div class="imageblock">
 <div class="content">
 <a class="image" href="https://talend.github.io/component-runtime/main/1.32.0/_images/intellij_tutorial_project_metadata.png" target="_blank" rel="noopener"><img src="_images/intellij_tutorial_project_metadata.png" alt="Project metadata"></a>
@@ -632,19 +629,19 @@ The <strong>Talend Component Kit Starter</strong> opens.</p>
 <p>The <strong>Component Family</strong> and the <strong>Category</strong> will be used later in Talend Open Studio to find the new component.</p>
 </li>
 <li>
-<p>The project metadata are mostly used to identify the project structure. A common practice is to replace 'company' in the default value by a value of your own, like your domain name.<br></p>
+<p>Project metadata is mostly used to identify the project structure. A common practice is to replace 'company' in the default value by a value of your own, like your domain name.<br></p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p>Once the metadata is filled, select <strong>Add a component</strong>. A new screen is displayed in the <strong>Talend Component Kit Starter</strong> that lets you define the generic configuration of the component. By default, new components are processors,</p>
+<p>Once the metadata is filled, select <strong>Add a component</strong>. A new screen is displayed in the <strong>Talend Component Kit Starter</strong> that lets you define the generic configuration of the component. By default, new components are processors.</p>
 </li>
 <li>
 <p>Enter a valid Java name for the component. For example, <strong>Logger</strong>.</p>
 </li>
 <li>
-<p>Select <strong>Configuration Model</strong> and add a string field named <code>level</code>. This input field will be used in the component configuration to enter additional information to display in the logs.<br></p>
+<p>Select <strong>Configuration Model</strong> and add a string type field named <code>level</code>. This input field will be used in the component configuration for final users to enter additional information to display in the logs.<br></p>
 <div class="imageblock">
 <div class="content">
 <a class="image" href="https://talend.github.io/component-runtime/main/1.32.0/_images/tutorial_component_configuration_model.png" target="_blank" rel="noopener"><img src="_images/tutorial_component_configuration_model.png" alt="Configuration Model"></a>
@@ -675,12 +672,12 @@ Because the component is a processor, it has an output branch by default. A proc
 </div>
 </li>
 <li>
-<p>Click <strong>Next</strong> and check the name and location of your project, then click <strong>Finish</strong> to generate the project in the IDE.<br></p>
+<p>Click <strong>Next</strong> and check the name and location of the project, then click <strong>Finish</strong> to generate the project in the IDE.<br></p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>At this point, your component is technically already ready to be compiled and deployed to Talend Open Studio. But first, have a look at the generated project:</p>
+<p>At this point, your component is technically already ready to be compiled and deployed to Talend Open Studio. But first, take a look at the generated project:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -703,7 +700,7 @@ Because the component is a processor, it has an output branch by default. A proc
 </div>
 </li>
 <li>
-<p>The <strong>package-info.java</strong> file contains the component metadata defined in the <strong>Talend Component Kit Starter</strong>, like the family and category.</p>
+<p>The <strong>package-info.java</strong> file contains the component metadata defined in the <strong>Talend Component Kit Starter</strong>, such as family and category.</p>
 </li>
 <li>
 <p>You can notice as well that the elements in the tree structure are named after the project metadata defined in the <strong>Talend Component Kit Starter</strong>.</p>
@@ -711,7 +708,7 @@ Because the component is a processor, it has an output branch by default. A proc
 </ul>
 </div>
 <div class="paragraph">
-<p>These files are the starting point if you later need to edit the configuration, logic, and metadata of your component.</p>
+<p>These files are the starting point if you later need to edit the configuration, logic, and metadata of the component.</p>
 </div>
 <div class="paragraph">
 <p>There is more that you can do and configure with the <strong>Talend Component Kit Starter</strong>. This tutorial covers only the basics. You can find more information in <a href="tutorial-generate-project-using-starter.html" class="page">this document</a>.</p>
@@ -719,21 +716,21 @@ Because the component is a processor, it has an output branch by default. A proc
 </div>
 </div>
 <div class="sect1">
-<h2 id="_compiling_and_deploying_the_component_to_talend_open_studio"><a class="anchor" href="#_compiling_and_deploying_the_component_to_talend_open_studio"></a>Compiling and deploying the component to Talend Open Studio</h2>
+<h2 id="_compile_and_deploy_the_component_to_talend_open_studio"><a class="anchor" href="#_compile_and_deploy_the_component_to_talend_open_studio"></a>Compile and deploy the component to Talend Open Studio</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Without any modification in the component code, you can compile the project and deploy the component to a local instance of Talend Open Studio.</p>
+<p>Without modifying the component code generated from the Starter, you can compile the project and deploy the component to a local instance of Talend Open Studio.</p>
 </div>
 <div class="paragraph">
-<p>This way, it will be easy to check that what is visible in the Studio is what is intended.</p>
+<p>The logic of the component is not yet implemented at that stage. Only the configurable part specified in the Starter will be visible. This step is useful to confirm that the basic configuration of the component renders correctly.</p>
 </div>
 <div class="paragraph">
-<p>Before starting to run any command, make sure Talend Open Studio is not running.</p>
+<p>Before starting to run any command, make sure that Talend Open Studio is not running.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>From your component project in IntelliJ, open a terminal and make sure that the selected directory is the root of the project. All commands shown in this tutorial are performed from this location.<br></p>
+<p>From the component project in IntelliJ, open a terminal and make sure that the selected directory is the root of the project. All commands shown in this tutorial are performed from this location.<br></p>
 <div class="imageblock">
 <div class="content">
 <a class="image" href="https://talend.github.io/component-runtime/main/1.32.0/_images/tutorial_intellij_terminal_blank.png" target="_blank" rel="noopener"><img src="_images/tutorial_intellij_terminal_blank.png" alt="Compile terminal"></a>
@@ -742,11 +739,11 @@ Because the component is a processor, it has an output branch by default. A proc
 </li>
 <li>
 <p>Compile the project by running the following command: <code>mvnw clean install</code>.<br>
-The <code>mvnw</code> command refers to the Maven wrapper that is shipped with Talend Component Kit. It allows to use the right version of Maven for your project without having to install it manually beforehand. An equivalent wrapper is available for Gradle.</p>
+The <code>mvnw</code> command refers to the Maven wrapper that is embedded in Talend Component Kit. It allows to use the right version of Maven for your project without having to install it manually beforehand. An equivalent wrapper is available for Gradle.</p>
 </li>
 <li>
 <p>Once the command is executed and you see <strong>BUILD SUCCESS</strong> in the terminal, deploy the component to your local instance of Talend Open Studio using the following command:<br>
-<code>mvnw talend-component:deploy-in-studio -Dtalend.component.studioHome="&lt;path to Talend Open Studio home&gt;"</code><br></p>
+<code>mvnw talend-component:deploy-in-studio -Dtalend.component.studioHome="&lt;path to Talend Open Studio home&gt;"</code>.+</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -754,7 +751,7 @@ The <code>mvnw</code> command refers to the Maven wrapper that is shipped with T
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Replace the path by your own value. If the path contains spaces (for example, <code>Program Files</code>), enclose it with double quotes.
+Replace the path with your own value. If the path contains spaces (for example, <code>Program Files</code>), enclose it with double quotes.
 </td>
 </tr>
 </table>
@@ -773,10 +770,10 @@ Replace the path by your own value. If the path contains spaces (for example, <c
 <div class="ulist">
 <ul>
 <li>
-<p>The new component is present inside the new family and category that were specified in the <strong>Talend Component Kit Starter</strong>. You can add it to your job and open its settings.</p>
+<p>Find the new component by looking for the family and category specified in the <strong>Talend Component Kit Starter</strong>. You can add it to your job and open its settings.</p>
 </li>
 <li>
-<p>Notice that the <strong>level</strong> field that was specified in the configuration model of the component in the <strong>Talend Component Kit Starter</strong> is present.<br></p>
+<p>Notice that the <strong>level</strong> field specified in the configuration model of the component in the <strong>Talend Component Kit Starter</strong> is present.<br></p>
 <div class="imageblock">
 <div class="content">
 <a class="image" href="https://talend.github.io/component-runtime/main/1.32.0/_images/tutorial_first_component_in_studio.png" target="_blank" rel="noopener"><img src="_images/tutorial_first_component_in_studio.png" alt="Component in Studio"></a>
@@ -789,15 +786,15 @@ Replace the path by your own value. If the path contains spaces (for example, <c
 </ol>
 </div>
 <div class="paragraph">
-<p>At this point, your new component is available in Talend Open Studio, and its configurable part is already set. But the component logic is still to be defined.<br></p>
+<p>At this point, the new component is available in Talend Open Studio, and its configurable part is already set. But the component logic is still to be defined.<br></p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_editing_the_component"><a class="anchor" href="#_editing_the_component"></a>Editing the component</h2>
+<h2 id="_edit_the_component"><a class="anchor" href="#_edit_the_component"></a>Edit the component</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You can now edit the component to implement a simple logic: reading the data contained in the input branch of the component to display it the execution logs of the job. The value of the <strong>level</strong> field of the component also needs to be displayed and changed to uppercase.</p>
+<p>You can now edit the component to implement its logic: reading the data coming through the input branch to display that data in the execution logs of the job. The value of the <strong>level</strong> field that final users can fill also needs to be changed to uppercase and displayed in the logs.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -805,7 +802,7 @@ Replace the path by your own value. If the path contains spaces (for example, <c
 <p>Save the job created earlier and close Talend Open Studio.</p>
 </li>
 <li>
-<p>Back in IntelliJ open the <strong>LoggerProcessor</strong> class. This is the class where the component logic can be defined.</p>
+<p>Go back to the component development project in IntelliJ and open the <strong>LoggerProcessor</strong> class. This is the class where the component logic can be defined.</p>
 </li>
 <li>
 <p>Look for the <code>@ElementListener</code> method. It is already present and references the default input branch that was defined in the <strong>Talend Component Kit Starter</strong>, but it is not complete yet.</p>
@@ -814,7 +811,7 @@ Replace the path by your own value. If the path contains spaces (for example, <c
 <p>To be able to log the data in input to the console, add the following lines:<br></p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">//Log to the console
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">//Log read input to the console with uppercase level.
         System.out.println("["+configuration.getLevel().toUpperCase()+"] "+defaultInput);</code></pre>
 </div>
 </div>
@@ -826,11 +823,9 @@ Replace the path by your own value. If the path contains spaces (for example, <c
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@ElementListener
     public void onNext(
             @Input final Record defaultInput) {
-        // this is the method allowing you to handle the input(s) and emit the output(s)
-        // after some custom logic you put here, to send a value to next element you can use an
-        // output parameter and call emit(value).
+        //Reads the input.
 
-        //Log to the console
+        //Log read input to the console with uppercase level.
         System.out.println("["+configuration.getLevel().toUpperCase()+"] "+defaultInput);
     }</code></pre>
 </div>
@@ -841,14 +836,14 @@ Replace the path by your own value. If the path contains spaces (for example, <c
 <div class="olist arabic">
 <ol class="arabic" start="5">
 <li>
-<p>Open the Terminal again to compile the project and deploy the component again. To do that, run successively the two following commands:</p>
+<p>Open a Terminal again to compile the project and deploy the component again. To do that, run successively the two following commands:</p>
 <div class="ulist">
 <ul>
 <li>
 <p><code>mvnw clean install</code></p>
 </li>
 <li>
-<p><code>`mvnw talend-component:deploy-in-studio -Dtalend.component.studioHome="&lt;path to Talend Open Studio home&gt;"</code></p>
+<p><code>`mvnw talend-component:deploy-in-studio -Dtalend.component.studioHome="&lt;path to Talend Open Studio home&gt;"</code>.</p>
 </li>
 </ul>
 </div>
@@ -856,7 +851,7 @@ Replace the path by your own value. If the path contains spaces (for example, <c
 </ol>
 </div>
 <div class="paragraph">
-<p>The update of the component logic should now be deployed to the Studio. After restarting the Studio, you will be ready to build a job and use your component for the first time.</p>
+<p>The update of the component logic should now be deployed. After restarting Talend Open Studio, you will be ready to build a job and use the component for the first time.</p>
 </div>
 <div class="paragraph">
 <p>To learn the different possibilities and methods available to develop more complex logics, refer to <a href="component-define-processor-output.html" class="page">this document</a>.</p>
@@ -867,7 +862,7 @@ Replace the path by your own value. If the path contains spaces (for example, <c
 </div>
 </div>
 <div class="sect1">
-<h2 id="_building_a_job_with_the_component"><a class="anchor" href="#_building_a_job_with_the_component"></a>Building a job with the component</h2>
+<h2 id="_build_a_job_with_the_component"><a class="anchor" href="#_build_a_job_with_the_component"></a>Build a job with the component</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>As the component is now ready to be used, it is time to create a job and check that it behaves as intended.</p>
