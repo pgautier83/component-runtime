@@ -15,7 +15,7 @@
     <meta name="description" content="Get an overview of the main steps to code the logic of your custom Talend Componit Kit components">
     <meta name="keywords" content="create, code, class, logic, layout, configuration, dev, overview">
     <meta name="generator" content="Antora 2.2.0">
-<meta name="date" content="2021-03-29T17:46:24.685Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
+<meta name="date" content="2021-04-01T09:24:45.390Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/idea.min.css" integrity="sha256-rD61BPsgKHzJPyg7vpXaYOw6tMYuY2fz1p9033NYeM8=" crossorigin="anonymous" />
@@ -900,7 +900,7 @@ public class MyProcessor {
 <p>Datasets and datastores are configuration types that define how and where to pull the data from. They are used at design time to create shared configurations that can be stored and used at runtime.</p>
 </div>
 <div class="paragraph">
-<p>All input and output components created using Talend Component Kit must reference a valid dataset. Each dataset must reference a datastore.</p>
+<p>All connectors (input and output components) created using Talend Component Kit must reference a valid dataset. Each dataset must reference a datastore.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -933,7 +933,10 @@ public class MyProcessor {
 <p>a datastore is used in each dataset.</p>
 </li>
 <li>
-<p>each dataset has a corresponding input component (mapper or emitter) which has a configuration that is usable if the software only fills the dataset part. All other properties must not be required.</p>
+<p>each dataset has a corresponding input component (mapper or emitter).</p>
+</li>
+<li>
+<p>This input component must be able to work with only the dataset part filled by final users. Any other property implemented for that component must be optional.</p>
 </li>
 </ul>
 </div>
@@ -965,11 +968,11 @@ public class MyProcessor {
 <div class="paragraph">
 <p>You can specify a datastore and its context of use (in which dataset, etc.) from the <a href="tutorial-generate-project-using-starter.html" class="page">Component Kit Starter</a>.</p>
 </div>
-<div class="admonitionblock important">
+<div class="admonitionblock tip">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-important" title="Important"></i>
+<i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
 Make sure to modelize the data your components are designed to handle before defining datasets and datastores in the Component Kit Starter.
@@ -978,7 +981,7 @@ Make sure to modelize the data your components are designed to handle before def
 </table>
 </div>
 <div class="paragraph">
-<p>Once you generate and import the project into an IDE, you can find your datastores under a specific <code>datastore</code> node.</p>
+<p>Once you generate and import the project into an IDE, you can find datastores under a specific <code>datastore</code> node.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -994,8 +997,8 @@ Make sure to modelize the data your components are designed to handle before def
 
 @DataStore("DatastoreA") <i class="conum" data-value="1"></i><b>(1)</b>
 @GridLayout({ <i class="conum" data-value="2"></i><b>(2)</b>
-    // the generated layout put one configuration entry per line,
-    // customize it as much as needed
+    // The generated component layout will display one configuration entry per line.
+    // Customize it as much as needed.
     @GridLayout.Row({ "apiurl" }),
     @GridLayout.Row({ "username" }),
     @GridLayout.Row({ "password" })
@@ -1056,7 +1059,7 @@ public class DatastoreA implements Serializable {
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Defining each element of the configuration: a URL, a username, and a password. Note that the password is also marked as being a credential.</td>
+<td>Defining each element of the configuration: a URL, a username, and a password. Note that the password is also marked as a credential.</td>
 </tr>
 </table>
 </div>
@@ -1064,9 +1067,17 @@ public class DatastoreA implements Serializable {
 <div class="sect2">
 <h3 id="_defining_a_dataset"><a class="anchor" href="#_defining_a_dataset"></a>Defining a dataset</h3>
 <div class="paragraph">
-<p>A dataset represents the inbound data. It is generally made of:
-* A datastore that defines the connection information needed to access the data.
-* A query.</p>
+<p>A dataset represents the inbound data. It is generally made of:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A datastore that defines the connection information needed to access the data.</p>
+</li>
+<li>
+<p>A query.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>You can specify a dataset and its context of use (in which input and output component it is used) from the <a href="tutorial-generate-project-using-starter.html" class="page">Component Kit Starter</a>.</p>
@@ -1084,7 +1095,7 @@ Make sure to modelize the data your components are designed to handle before def
 </table>
 </div>
 <div class="paragraph">
-<p>Once you generate and import the project into an IDE, you can find your datastores under a specific <code>dataset</code> node.</p>
+<p>Once you generate and import the project into an IDE, you can find datasets under a specific <code>dataset</code> node.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1100,8 +1111,8 @@ Make sure to modelize the data your components are designed to handle before def
 
 @DataSet("DatasetA") <i class="conum" data-value="1"></i><b>(1)</b>
 @GridLayout({
-    // the generated layout put one configuration entry per line,
-    // customize it as much as needed
+    // The generated component layout will display one configuration entry per line.
+    // Customize it as much as needed.
     @GridLayout.Row({ "datastore" })
 })
 @Documentation("A Dataset configuration containing a simple datastore") <i class="conum" data-value="2"></i><b>(2)</b>
@@ -1690,37 +1701,27 @@ public MyNewData map(@Input final MyData data, @Input("input2") final MyData2 da
 </div>
 <div class="sect3">
 <h4 id="_implementing_batch_processing"><a class="anchor" href="#_implementing_batch_processing"></a>Implementing batch processing</h4>
+<div class="sect4">
+<h5 id="_what_is_batch_processing"><a class="anchor" href="#_what_is_batch_processing"></a>What is batch processing</h5>
 <div class="paragraph">
-<p>Depending on several requirements, including the system capacity and business needs, a processor can process records differently.</p>
+<p>Batch processing refers to the way execution environments process batches of data handled by a component using a grouping mechanism.</p>
 </div>
 <div class="paragraph">
-<p>For example, for real-time or near-real time processing, it is more interesting to process small batches of data more often. On the other hand, in case of one-time processing, it is more optimal to adapt the way the component handles batches of data according to the system capacity.</p>
+<p>By default, the execution environment of a component automatically decides how to process groups of records and estimates an optimal group size depending on the system capacity. With this default behavior, the size of each group could sometimes be optimized for the system to handle the load more effectively or to match business requirements.</p>
 </div>
 <div class="paragraph">
-<p>By default, the runtime automatically estimates a group size that it considers good, according to the system capacity, to process the data. This group size can sometimes be too big and not optimal for your needs or for your system to handle effectively and correctly.</p>
+<p>For example, real-time or near-real time processing needs often imply processing smaller batches of data, but more often. On the other hand, a one-time processing without business contraints is more effectively handled with a batch size based on the system capacity.</p>
 </div>
 <div class="paragraph">
-<p>Users can then customize this size from the component settings in Talend Studio, by specifying a <code>maxBatchSize</code> that adapts the size of each group of data to be processed.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-The estimated group size logic is automatically implemented when a component is deployed to a Talend application. Besides defining the @BeforeGroup and @AfterGroup logic detailed below, no action is required on the implementation side of the component.
-</td>
-</tr>
-</table>
+<p>Final users of a component developed with the Talend Component Kit that integrates the batch processing logic described in this document can override this automatic size. To do that, a <code>maxBatchSize</code> option is available in the component settings and allows to set the maximum size of each group of data to process.</p>
 </div>
 <div class="paragraph">
-<p>The component batch processes the data as follows:</p>
+<p>A component processes batch data as follows:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Case 1 - No <code>maxBatchSize</code> is specified in the component configuration. The runtime estimates a group size of 4. Records are processed by groups of 4.</p>
+<p>Case 1 - No <code>maxBatchSize</code> is specified in the component configuration. The execution environment estimates a group size of 4. Records are processed by groups of 4.</p>
 </li>
 <li>
 <p>Case 2 - The runtime estimates a group size of 4 but a <code>maxBatchSize</code> of 3 is specified in the component configuration. The system adapts the group size to 3. Records are processed by groups of 3.</p>
@@ -1730,6 +1731,24 @@ The estimated group size logic is automatically implemented when a component is 
 <div class="paragraph">
 <div class="title"><strong>Processing schema (values are examples):</strong></div>
 <p><span class="image"><a class="image" href="https://talend.github.io/component-runtime/main/1.32.0/_images/batch-processing-maxbatchsize.png" target="_blank" rel="noopener"><img src="_images/batch-processing-maxbatchsize.png" alt="Batch processing"></a></span></p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_batch_processing_implementation_logic"><a class="anchor" href="#_batch_processing_implementation_logic"></a>Batch processing implementation logic</h5>
+<div class="paragraph">
+<p>Batch processing relies on the sequence of three methods: <code>@BeforeGroup</code>, <code>@ElementListener</code>, <code>@AfterGroup</code>, that you can customize to your needs as a component Developer.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The group size automatic estimation logic is automatically implemented when a component is deployed to a Talend application.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Each group is processed as follows until there is no record left:</p>
@@ -1783,7 +1802,7 @@ public class BulkProcessor implements Serializable {
 
     @AfterGroup
     public void commit() {
-        // save buffered records at once (bulk)
+        // saves buffered records at once (bulk)
     }
 }</code></pre>
 </div>
@@ -1798,7 +1817,7 @@ public class BulkProcessor implements Serializable {
 
     @AfterGroup
     public void commit(final Collection&lt;Record&gt; records) {
-        // save records
+        // saves records
     }
 }</code></pre>
 </div>
@@ -1810,13 +1829,14 @@ public class BulkProcessor implements Serializable {
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-When writing tests for your components, you can force the <code>maxBatchSize</code> parameter value by setting it with the following syntax: <code>&lt;configuration prefix&gt;.$maxBatchSize=10</code>.
+When writing tests for components, you can force the <code>maxBatchSize</code> parameter value by setting it with the following syntax: <code>&lt;configuration prefix&gt;.$maxBatchSize=10</code>.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
 <p>You can learn more about processors in <a href="component-define-processor-output.html" class="page">this document</a>.</p>
+</div>
 </div>
 <div class="sect4 relatedlinks">
 <h5 id="_related_articles_3"><a class="anchor" href="#_related_articles_3"></a>Related articles</h5>
@@ -2508,7 +2528,7 @@ If it breaks your application, you can disable that validation on the JVM by set
 <p>Datasets and datastores are configuration types that define how and where to pull the data from. They are used at design time to create shared configurations that can be stored and used at runtime.</p>
 </div>
 <div class="paragraph">
-<p>All input and output components created using Talend Component Kit must reference a valid dataset. Each dataset must reference a datastore.</p>
+<p>All connectors (input and output components) created using Talend Component Kit must reference a valid dataset. Each dataset must reference a datastore.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2541,7 +2561,10 @@ If it breaks your application, you can disable that validation on the JVM by set
 <p>a datastore is used in each dataset.</p>
 </li>
 <li>
-<p>each dataset has a corresponding input component (mapper or emitter) which has a configuration that is usable if the software only fills the dataset part. All other properties must not be required.</p>
+<p>each dataset has a corresponding input component (mapper or emitter).</p>
+</li>
+<li>
+<p>This input component must be able to work with only the dataset part filled by final users. Any other property implemented for that component must be optional.</p>
 </li>
 </ul>
 </div>
@@ -2573,11 +2596,11 @@ If it breaks your application, you can disable that validation on the JVM by set
 <div class="paragraph">
 <p>You can specify a datastore and its context of use (in which dataset, etc.) from the <a href="tutorial-generate-project-using-starter.html" class="page">Component Kit Starter</a>.</p>
 </div>
-<div class="admonitionblock important">
+<div class="admonitionblock tip">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-important" title="Important"></i>
+<i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
 Make sure to modelize the data your components are designed to handle before defining datasets and datastores in the Component Kit Starter.
@@ -2586,7 +2609,7 @@ Make sure to modelize the data your components are designed to handle before def
 </table>
 </div>
 <div class="paragraph">
-<p>Once you generate and import the project into an IDE, you can find your datastores under a specific <code>datastore</code> node.</p>
+<p>Once you generate and import the project into an IDE, you can find datastores under a specific <code>datastore</code> node.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -2602,8 +2625,8 @@ Make sure to modelize the data your components are designed to handle before def
 
 @DataStore("DatastoreA") <i class="conum" data-value="1"></i><b>(1)</b>
 @GridLayout({ <i class="conum" data-value="2"></i><b>(2)</b>
-    // the generated layout put one configuration entry per line,
-    // customize it as much as needed
+    // The generated component layout will display one configuration entry per line.
+    // Customize it as much as needed.
     @GridLayout.Row({ "apiurl" }),
     @GridLayout.Row({ "username" }),
     @GridLayout.Row({ "password" })
@@ -2664,7 +2687,7 @@ public class DatastoreA implements Serializable {
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Defining each element of the configuration: a URL, a username, and a password. Note that the password is also marked as being a credential.</td>
+<td>Defining each element of the configuration: a URL, a username, and a password. Note that the password is also marked as a credential.</td>
 </tr>
 </table>
 </div>
@@ -2672,9 +2695,17 @@ public class DatastoreA implements Serializable {
 <div class="sect3">
 <h4 id="_defining_a_dataset_2"><a class="anchor" href="#_defining_a_dataset_2"></a>Defining a dataset</h4>
 <div class="paragraph">
-<p>A dataset represents the inbound data. It is generally made of:
-* A datastore that defines the connection information needed to access the data.
-* A query.</p>
+<p>A dataset represents the inbound data. It is generally made of:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A datastore that defines the connection information needed to access the data.</p>
+</li>
+<li>
+<p>A query.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>You can specify a dataset and its context of use (in which input and output component it is used) from the <a href="tutorial-generate-project-using-starter.html" class="page">Component Kit Starter</a>.</p>
@@ -2692,7 +2723,7 @@ Make sure to modelize the data your components are designed to handle before def
 </table>
 </div>
 <div class="paragraph">
-<p>Once you generate and import the project into an IDE, you can find your datastores under a specific <code>dataset</code> node.</p>
+<p>Once you generate and import the project into an IDE, you can find datasets under a specific <code>dataset</code> node.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -2708,8 +2739,8 @@ Make sure to modelize the data your components are designed to handle before def
 
 @DataSet("DatasetA") <i class="conum" data-value="1"></i><b>(1)</b>
 @GridLayout({
-    // the generated layout put one configuration entry per line,
-    // customize it as much as needed
+    // The generated component layout will display one configuration entry per line.
+    // Customize it as much as needed.
     @GridLayout.Row({ "datastore" })
 })
 @Documentation("A Dataset configuration containing a simple datastore") <i class="conum" data-value="2"></i><b>(2)</b>
@@ -4053,37 +4084,27 @@ public class RestApiConfiguration implements Serializable {
 <div class="sect1">
 <h2 id="_implementing_batch_processing_2"><a class="anchor" href="#_implementing_batch_processing_2"></a>Implementing batch processing</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_what_is_batch_processing_2"><a class="anchor" href="#_what_is_batch_processing_2"></a>What is batch processing</h3>
 <div class="paragraph">
-<p>Depending on several requirements, including the system capacity and business needs, a processor can process records differently.</p>
+<p>Batch processing refers to the way execution environments process batches of data handled by a component using a grouping mechanism.</p>
 </div>
 <div class="paragraph">
-<p>For example, for real-time or near-real time processing, it is more interesting to process small batches of data more often. On the other hand, in case of one-time processing, it is more optimal to adapt the way the component handles batches of data according to the system capacity.</p>
+<p>By default, the execution environment of a component automatically decides how to process groups of records and estimates an optimal group size depending on the system capacity. With this default behavior, the size of each group could sometimes be optimized for the system to handle the load more effectively or to match business requirements.</p>
 </div>
 <div class="paragraph">
-<p>By default, the runtime automatically estimates a group size that it considers good, according to the system capacity, to process the data. This group size can sometimes be too big and not optimal for your needs or for your system to handle effectively and correctly.</p>
+<p>For example, real-time or near-real time processing needs often imply processing smaller batches of data, but more often. On the other hand, a one-time processing without business contraints is more effectively handled with a batch size based on the system capacity.</p>
 </div>
 <div class="paragraph">
-<p>Users can then customize this size from the component settings in Talend Studio, by specifying a <code>maxBatchSize</code> that adapts the size of each group of data to be processed.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-The estimated group size logic is automatically implemented when a component is deployed to a Talend application. Besides defining the @BeforeGroup and @AfterGroup logic detailed below, no action is required on the implementation side of the component.
-</td>
-</tr>
-</table>
+<p>Final users of a component developed with the Talend Component Kit that integrates the batch processing logic described in this document can override this automatic size. To do that, a <code>maxBatchSize</code> option is available in the component settings and allows to set the maximum size of each group of data to process.</p>
 </div>
 <div class="paragraph">
-<p>The component batch processes the data as follows:</p>
+<p>A component processes batch data as follows:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Case 1 - No <code>maxBatchSize</code> is specified in the component configuration. The runtime estimates a group size of 4. Records are processed by groups of 4.</p>
+<p>Case 1 - No <code>maxBatchSize</code> is specified in the component configuration. The execution environment estimates a group size of 4. Records are processed by groups of 4.</p>
 </li>
 <li>
 <p>Case 2 - The runtime estimates a group size of 4 but a <code>maxBatchSize</code> of 3 is specified in the component configuration. The system adapts the group size to 3. Records are processed by groups of 3.</p>
@@ -4093,6 +4114,24 @@ The estimated group size logic is automatically implemented when a component is 
 <div class="paragraph">
 <div class="title"><strong>Processing schema (values are examples):</strong></div>
 <p><span class="image"><a class="image" href="https://talend.github.io/component-runtime/main/1.32.0/_images/batch-processing-maxbatchsize.png" target="_blank" rel="noopener"><img src="_images/batch-processing-maxbatchsize.png" alt="Batch processing"></a></span></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_batch_processing_implementation_logic_2"><a class="anchor" href="#_batch_processing_implementation_logic_2"></a>Batch processing implementation logic</h3>
+<div class="paragraph">
+<p>Batch processing relies on the sequence of three methods: <code>@BeforeGroup</code>, <code>@ElementListener</code>, <code>@AfterGroup</code>, that you can customize to your needs as a component Developer.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The group size automatic estimation logic is automatically implemented when a component is deployed to a Talend application.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Each group is processed as follows until there is no record left:</p>
@@ -4146,7 +4185,7 @@ public class BulkProcessor implements Serializable {
 
     @AfterGroup
     public void commit() {
-        // save buffered records at once (bulk)
+        // saves buffered records at once (bulk)
     }
 }</code></pre>
 </div>
@@ -4161,7 +4200,7 @@ public class BulkProcessor implements Serializable {
 
     @AfterGroup
     public void commit(final Collection&lt;Record&gt; records) {
-        // save records
+        // saves records
     }
 }</code></pre>
 </div>
@@ -4173,13 +4212,14 @@ public class BulkProcessor implements Serializable {
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-When writing tests for your components, you can force the <code>maxBatchSize</code> parameter value by setting it with the following syntax: <code>&lt;configuration prefix&gt;.$maxBatchSize=10</code>.
+When writing tests for components, you can force the <code>maxBatchSize</code> parameter value by setting it with the following syntax: <code>&lt;configuration prefix&gt;.$maxBatchSize=10</code>.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
 <p>You can learn more about processors in <a href="component-define-processor-output.html" class="page">this document</a>.</p>
+</div>
 </div>
 <div class="sect2 relatedlinks">
 <h3 id="_related_articles_8"><a class="anchor" href="#_related_articles_8"></a>Related articles</h3>

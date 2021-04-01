@@ -15,7 +15,7 @@
     <meta name="description" content="How to define the layout and configurable options of a component">
     <meta name="keywords" content="layout, option, field">
     <meta name="generator" content="Antora 2.2.0">
-<meta name="date" content="2021-03-29T17:46:23.205Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
+<meta name="date" content="2021-04-01T09:24:43.955Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/idea.min.css" integrity="sha256-rD61BPsgKHzJPyg7vpXaYOw6tMYuY2fz1p9033NYeM8=" crossorigin="anonymous" />
@@ -1140,7 +1140,7 @@ If it breaks your application, you can disable that validation on the JVM by set
 <p>Datasets and datastores are configuration types that define how and where to pull the data from. They are used at design time to create shared configurations that can be stored and used at runtime.</p>
 </div>
 <div class="paragraph">
-<p>All input and output components created using Talend Component Kit must reference a valid dataset. Each dataset must reference a datastore.</p>
+<p>All connectors (input and output components) created using Talend Component Kit must reference a valid dataset. Each dataset must reference a datastore.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1173,7 +1173,10 @@ If it breaks your application, you can disable that validation on the JVM by set
 <p>a datastore is used in each dataset.</p>
 </li>
 <li>
-<p>each dataset has a corresponding input component (mapper or emitter) which has a configuration that is usable if the software only fills the dataset part. All other properties must not be required.</p>
+<p>each dataset has a corresponding input component (mapper or emitter).</p>
+</li>
+<li>
+<p>This input component must be able to work with only the dataset part filled by final users. Any other property implemented for that component must be optional.</p>
 </li>
 </ul>
 </div>
@@ -1205,11 +1208,11 @@ If it breaks your application, you can disable that validation on the JVM by set
 <div class="paragraph">
 <p>You can specify a datastore and its context of use (in which dataset, etc.) from the <a href="tutorial-generate-project-using-starter.html" class="page">Component Kit Starter</a>.</p>
 </div>
-<div class="admonitionblock important">
+<div class="admonitionblock tip">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-important" title="Important"></i>
+<i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
 Make sure to modelize the data your components are designed to handle before defining datasets and datastores in the Component Kit Starter.
@@ -1218,7 +1221,7 @@ Make sure to modelize the data your components are designed to handle before def
 </table>
 </div>
 <div class="paragraph">
-<p>Once you generate and import the project into an IDE, you can find your datastores under a specific <code>datastore</code> node.</p>
+<p>Once you generate and import the project into an IDE, you can find datastores under a specific <code>datastore</code> node.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1234,8 +1237,8 @@ Make sure to modelize the data your components are designed to handle before def
 
 @DataStore("DatastoreA") <i class="conum" data-value="1"></i><b>(1)</b>
 @GridLayout({ <i class="conum" data-value="2"></i><b>(2)</b>
-    // the generated layout put one configuration entry per line,
-    // customize it as much as needed
+    // The generated component layout will display one configuration entry per line.
+    // Customize it as much as needed.
     @GridLayout.Row({ "apiurl" }),
     @GridLayout.Row({ "username" }),
     @GridLayout.Row({ "password" })
@@ -1296,7 +1299,7 @@ public class DatastoreA implements Serializable {
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Defining each element of the configuration: a URL, a username, and a password. Note that the password is also marked as being a credential.</td>
+<td>Defining each element of the configuration: a URL, a username, and a password. Note that the password is also marked as a credential.</td>
 </tr>
 </table>
 </div>
@@ -1304,9 +1307,17 @@ public class DatastoreA implements Serializable {
 <div class="sect2">
 <h3 id="_defining_a_dataset"><a class="anchor" href="#_defining_a_dataset"></a>Defining a dataset</h3>
 <div class="paragraph">
-<p>A dataset represents the inbound data. It is generally made of:
-* A datastore that defines the connection information needed to access the data.
-* A query.</p>
+<p>A dataset represents the inbound data. It is generally made of:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A datastore that defines the connection information needed to access the data.</p>
+</li>
+<li>
+<p>A query.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>You can specify a dataset and its context of use (in which input and output component it is used) from the <a href="tutorial-generate-project-using-starter.html" class="page">Component Kit Starter</a>.</p>
@@ -1324,7 +1335,7 @@ Make sure to modelize the data your components are designed to handle before def
 </table>
 </div>
 <div class="paragraph">
-<p>Once you generate and import the project into an IDE, you can find your datastores under a specific <code>dataset</code> node.</p>
+<p>Once you generate and import the project into an IDE, you can find datasets under a specific <code>dataset</code> node.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1340,8 +1351,8 @@ Make sure to modelize the data your components are designed to handle before def
 
 @DataSet("DatasetA") <i class="conum" data-value="1"></i><b>(1)</b>
 @GridLayout({
-    // the generated layout put one configuration entry per line,
-    // customize it as much as needed
+    // The generated component layout will display one configuration entry per line.
+    // Customize it as much as needed.
     @GridLayout.Row({ "datastore" })
 })
 @Documentation("A Dataset configuration containing a simple datastore") <i class="conum" data-value="2"></i><b>(2)</b>

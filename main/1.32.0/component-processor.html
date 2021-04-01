@@ -15,7 +15,7 @@
     <meta name="description" content="How to develop a processor component with Talend Component Kit">
     <meta name="keywords" content="component type, processor, output">
     <meta name="generator" content="Antora 2.2.0">
-<meta name="date" content="2021-03-29T17:46:23.555Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
+<meta name="date" content="2021-04-01T09:24:44.283Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/idea.min.css" integrity="sha256-rD61BPsgKHzJPyg7vpXaYOw6tMYuY2fz1p9033NYeM8=" crossorigin="anonymous" />
@@ -730,37 +730,27 @@ public MyNewData map(@Input final MyData data, @Input("input2") final MyData2 da
 <div class="sect1">
 <h2 id="_implementing_batch_processing"><a class="anchor" href="#_implementing_batch_processing"></a>Implementing batch processing</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_what_is_batch_processing"><a class="anchor" href="#_what_is_batch_processing"></a>What is batch processing</h3>
 <div class="paragraph">
-<p>Depending on several requirements, including the system capacity and business needs, a processor can process records differently.</p>
+<p>Batch processing refers to the way execution environments process batches of data handled by a component using a grouping mechanism.</p>
 </div>
 <div class="paragraph">
-<p>For example, for real-time or near-real time processing, it is more interesting to process small batches of data more often. On the other hand, in case of one-time processing, it is more optimal to adapt the way the component handles batches of data according to the system capacity.</p>
+<p>By default, the execution environment of a component automatically decides how to process groups of records and estimates an optimal group size depending on the system capacity. With this default behavior, the size of each group could sometimes be optimized for the system to handle the load more effectively or to match business requirements.</p>
 </div>
 <div class="paragraph">
-<p>By default, the runtime automatically estimates a group size that it considers good, according to the system capacity, to process the data. This group size can sometimes be too big and not optimal for your needs or for your system to handle effectively and correctly.</p>
+<p>For example, real-time or near-real time processing needs often imply processing smaller batches of data, but more often. On the other hand, a one-time processing without business contraints is more effectively handled with a batch size based on the system capacity.</p>
 </div>
 <div class="paragraph">
-<p>Users can then customize this size from the component settings in Talend Studio, by specifying a <code>maxBatchSize</code> that adapts the size of each group of data to be processed.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-The estimated group size logic is automatically implemented when a component is deployed to a Talend application. Besides defining the @BeforeGroup and @AfterGroup logic detailed below, no action is required on the implementation side of the component.
-</td>
-</tr>
-</table>
+<p>Final users of a component developed with the Talend Component Kit that integrates the batch processing logic described in this document can override this automatic size. To do that, a <code>maxBatchSize</code> option is available in the component settings and allows to set the maximum size of each group of data to process.</p>
 </div>
 <div class="paragraph">
-<p>The component batch processes the data as follows:</p>
+<p>A component processes batch data as follows:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Case 1 - No <code>maxBatchSize</code> is specified in the component configuration. The runtime estimates a group size of 4. Records are processed by groups of 4.</p>
+<p>Case 1 - No <code>maxBatchSize</code> is specified in the component configuration. The execution environment estimates a group size of 4. Records are processed by groups of 4.</p>
 </li>
 <li>
 <p>Case 2 - The runtime estimates a group size of 4 but a <code>maxBatchSize</code> of 3 is specified in the component configuration. The system adapts the group size to 3. Records are processed by groups of 3.</p>
@@ -770,6 +760,24 @@ The estimated group size logic is automatically implemented when a component is 
 <div class="paragraph">
 <div class="title"><strong>Processing schema (values are examples):</strong></div>
 <p><span class="image"><a class="image" href="https://talend.github.io/component-runtime/main/1.32.0/_images/batch-processing-maxbatchsize.png" target="_blank" rel="noopener"><img src="_images/batch-processing-maxbatchsize.png" alt="Batch processing"></a></span></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_batch_processing_implementation_logic"><a class="anchor" href="#_batch_processing_implementation_logic"></a>Batch processing implementation logic</h3>
+<div class="paragraph">
+<p>Batch processing relies on the sequence of three methods: <code>@BeforeGroup</code>, <code>@ElementListener</code>, <code>@AfterGroup</code>, that you can customize to your needs as a component Developer.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The group size automatic estimation logic is automatically implemented when a component is deployed to a Talend application.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Each group is processed as follows until there is no record left:</p>
@@ -823,7 +831,7 @@ public class BulkProcessor implements Serializable {
 
     @AfterGroup
     public void commit() {
-        // save buffered records at once (bulk)
+        // saves buffered records at once (bulk)
     }
 }</code></pre>
 </div>
@@ -838,7 +846,7 @@ public class BulkProcessor implements Serializable {
 
     @AfterGroup
     public void commit(final Collection&lt;Record&gt; records) {
-        // save records
+        // saves records
     }
 }</code></pre>
 </div>
@@ -850,13 +858,14 @@ public class BulkProcessor implements Serializable {
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-When writing tests for your components, you can force the <code>maxBatchSize</code> parameter value by setting it with the following syntax: <code>&lt;configuration prefix&gt;.$maxBatchSize=10</code>.
+When writing tests for components, you can force the <code>maxBatchSize</code> parameter value by setting it with the following syntax: <code>&lt;configuration prefix&gt;.$maxBatchSize=10</code>.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
 <p>You can learn more about processors in <a href="component-define-processor-output.html" class="page">this document</a>.</p>
+</div>
 </div>
 <div class="sect2 relatedlinks">
 <h3 id="_related_articles"><a class="anchor" href="#_related_articles"></a>Related articles</h3>
