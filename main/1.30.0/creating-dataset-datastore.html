@@ -15,7 +15,7 @@
     <meta name="description" content="Learn how to define datasets and datastores for input and output components.">
     <meta name="keywords" content="datastore, dataset, validation, input, output">
     <meta name="generator" content="Antora 2.2.0">
-<meta name="date" content="2021-04-01T20:38:18.581Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
+<meta name="date" content="2021-04-08T17:54:34.922Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/idea.min.css" integrity="sha256-rD61BPsgKHzJPyg7vpXaYOw6tMYuY2fz1p9033NYeM8=" crossorigin="anonymous" />
@@ -93,6 +93,9 @@
           <ul class="dropdown-menu">
                 <li class="navbar-item version">
                     <a href="../1.32.0/index.html">1.32.0</a>
+                </li>
+                <li class="navbar-item version">
+                    <a href="../1.31.1/index.html">1.31.1</a>
                 </li>
                 <li class="navbar-item version">
                     <a href="../1.31.0/index.html">1.31.0</a>
@@ -833,16 +836,73 @@ ComponentFamily.datastore.DatastoreA._displayName=Datastore A</code></pre>
 <a class="image" href="https://talend.github.io/component-runtime/main/1.30.0/_images/studio_select_predefined_dataset.png" target="_blank" rel="noopener"><img src="_images/studio_select_predefined_dataset.png" alt="Dataset in Component"></a>
 </div>
 </div>
+<div class="paragraph">
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; component-runtime-1.30.0-branch</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>== How to create a reusable connection in Studio</p>
+</div>
+<div class="paragraph">
+<p>Studio will generate connection and close components auto for reusing connection function in input and output components, just need to do like this example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Service
+public class SomeService {
+
+    @CreateConnection
+    public Object createConn(@Option("configuration") SomeDataStore dataStore) throws ComponentException {
+        Object connection = null;
+        //get conn object by dataStore
+        return conn;
+    }
+
+    @CloseConnection
+    public CloseConnectionObject closeConn() {
+        return new CloseConnectionObject() {
+
+            public boolean close() throws ComponentException {
+                Object connection = this.getRuntimeContext().getConnection();
+                //do close action
+                return true;
+            }
+
+        };
+    }
+}</code></pre>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_how_does_the_component_server_interact_with_datasets_and_datastores"><a class="anchor" href="#_how_does_the_component_server_interact_with_datasets_and_datastores"></a>How does the component server interact with datasets and datastores</h2>
-<div class="sectionbody">
+<div class="paragraph">
+<p>Then the runtime mapper and processor only need to extends RuntimeContextInjector and can get the connection like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Version(1)
+@Icon(value = Icon.IconType.CUSTOM, custom = "SomeInput")
+@PartitionMapper(name = "SomeInput")
+@Documentation("the doc")
+public class SomeInputMapper implements Serializable {
+
+    @Connection
+    SomeConnection conn;
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>&gt;&gt;&gt;&gt;&gt;&gt;&gt; fdd15ad use annotation to replace interface for auto inject</p>
+</div>
+<div class="paragraph">
+<p>== How does the component server interact with datasets and datastores</p>
+</div>
 <div class="paragraph">
 <p>The component server scans all configuration types and returns a configuration type index. This index can be used for the integration into the targeted platforms (Studio, web applications, and so on).</p>
 </div>
-<div class="sect2">
-<h3 id="_dataset"><a class="anchor" href="#_dataset"></a>Dataset</h3>
+<div class="paragraph">
+<p>= Dataset</p>
+</div>
 <div class="paragraph">
 <p>Mark a model (complex object) as being a dataset.</p>
 </div>
@@ -864,9 +924,9 @@ ComponentFamily.datastore.DatastoreA._displayName=Datastore A</code></pre>
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>= Datastore</p>
 </div>
-<div class="sect2">
-<h3 id="_datastore"><a class="anchor" href="#_datastore"></a>Datastore</h3>
 <div class="paragraph">
 <p>Mark a model (complex object) as being a datastore (connection to a backend).</p>
 </div>
@@ -921,6 +981,7 @@ The component family associated with a configuration type (datastore/dataset) is
 </div>
 </div>
 </div>
+</div>
             </div>
           </div>
           <div class="col-sm-3 container article-side-panel">
@@ -929,7 +990,7 @@ The component family associated with a configuration type (datastore/dataset) is
 
                 <ul>
                     <li>
-                      <a class="article-side-actions-link" target="_blank" href="https://github.com/Talend/component-runtime/blob/component-runtime-1.30.0/documentation/src/main/antora/modules/ROOT/pages/creating-dataset-datastore.adoc">
+                      <a class="article-side-actions-link" target="_blank" href="https://github.com/Talend/component-runtime/edit/component-runtime-1.30.0-branch/documentation/src/main/antora/modules/ROOT/pages/creating-dataset-datastore.adoc">
                         <i class="fa fa-edit"></i> &nbsp; &nbsp; Suggest an edit
                       </a>
                     </li>

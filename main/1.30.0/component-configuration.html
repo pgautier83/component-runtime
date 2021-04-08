@@ -15,7 +15,7 @@
     <meta name="description" content="How to define the layout and configurable options of a component">
     <meta name="keywords" content="layout, option, field">
     <meta name="generator" content="Antora 2.2.0">
-<meta name="date" content="2021-04-01T20:38:18.093Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
+<meta name="date" content="2021-04-08T17:54:34.404Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/idea.min.css" integrity="sha256-rD61BPsgKHzJPyg7vpXaYOw6tMYuY2fz1p9033NYeM8=" crossorigin="anonymous" />
@@ -93,6 +93,9 @@
           <ul class="dropdown-menu">
                 <li class="navbar-item version">
                     <a href="../1.32.0/index.html">1.32.0</a>
+                </li>
+                <li class="navbar-item version">
+                    <a href="../1.31.1/index.html">1.31.1</a>
                 </li>
                 <li class="navbar-item version">
                     <a href="../1.31.0/index.html">1.31.0</a>
@@ -1413,14 +1416,73 @@ ComponentFamily.datastore.DatastoreA._displayName=Datastore A</code></pre>
 <a class="image" href="https://talend.github.io/component-runtime/main/1.30.0/_images/studio_select_predefined_dataset.png" target="_blank" rel="noopener"><img src="_images/studio_select_predefined_dataset.png" alt="Dataset in Component"></a>
 </div>
 </div>
+<div class="paragraph">
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; component-runtime-1.30.0-branch</p>
 </div>
-<div class="sect2">
-<h3 id="_how_does_the_component_server_interact_with_datasets_and_datastores"><a class="anchor" href="#_how_does_the_component_server_interact_with_datasets_and_datastores"></a>How does the component server interact with datasets and datastores</h3>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>== How to create a reusable connection in Studio</p>
+</div>
+<div class="paragraph">
+<p>Studio will generate connection and close components auto for reusing connection function in input and output components, just need to do like this example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Service
+public class SomeService {
+
+    @CreateConnection
+    public Object createConn(@Option("configuration") SomeDataStore dataStore) throws ComponentException {
+        Object connection = null;
+        //get conn object by dataStore
+        return conn;
+    }
+
+    @CloseConnection
+    public CloseConnectionObject closeConn() {
+        return new CloseConnectionObject() {
+
+            public boolean close() throws ComponentException {
+                Object connection = this.getRuntimeContext().getConnection();
+                //do close action
+                return true;
+            }
+
+        };
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then the runtime mapper and processor only need to extends RuntimeContextInjector and can get the connection like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Version(1)
+@Icon(value = Icon.IconType.CUSTOM, custom = "SomeInput")
+@PartitionMapper(name = "SomeInput")
+@Documentation("the doc")
+public class SomeInputMapper implements Serializable {
+
+    @Connection
+    SomeConnection conn;
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>&gt;&gt;&gt;&gt;&gt;&gt;&gt; fdd15ad use annotation to replace interface for auto inject</p>
+</div>
+<div class="paragraph">
+<p>== How does the component server interact with datasets and datastores</p>
+</div>
 <div class="paragraph">
 <p>The component server scans all configuration types and returns a configuration type index. This index can be used for the integration into the targeted platforms (Studio, web applications, and so on).</p>
 </div>
-<div class="sect3">
-<h4 id="_dataset"><a class="anchor" href="#_dataset"></a>Dataset</h4>
+<div class="paragraph">
+<p>= Dataset</p>
+</div>
 <div class="paragraph">
 <p>Mark a model (complex object) as being a dataset.</p>
 </div>
@@ -1442,9 +1504,9 @@ ComponentFamily.datastore.DatastoreA._displayName=Datastore A</code></pre>
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>= Datastore</p>
 </div>
-<div class="sect3">
-<h4 id="_datastore"><a class="anchor" href="#_datastore"></a>Datastore</h4>
 <div class="paragraph">
 <p>Mark a model (complex object) as being a datastore (connection to a backend).</p>
 </div>
@@ -1496,18 +1558,15 @@ The component family associated with a configuration type (datastore/dataset) is
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>== Defining links between properties</p>
 </div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_defining_links_between_properties"><a class="anchor" href="#_defining_links_between_properties"></a>Defining links between properties</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>If you need to define a binding between properties, you can use a set of annotations:</p>
 </div>
-<div class="sect2">
-<h3 id="_activeif"><a class="anchor" href="#_activeif"></a>ActiveIf</h3>
+<div class="paragraph">
+<p>= ActiveIf</p>
+</div>
 <div class="paragraph">
 <p>If the evaluation of the element at the location matches value then the element is considered active, otherwise it is deactivated.</p>
 </div>
@@ -1534,9 +1593,9 @@ The component family associated with a configuration type (datastore/dataset) is
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>= ActiveIfs</p>
 </div>
-<div class="sect2">
-<h3 id="_activeifs"><a class="anchor" href="#_activeifs"></a>ActiveIfs</h3>
 <div class="paragraph">
 <p>Allows to set multiple visibility conditions on the same property.</p>
 </div>
@@ -1624,11 +1683,12 @@ When using the programmatic API, metadata is prefixed with <code>tcomp::</code>.
 <div class="paragraph">
 <p>For more details, refer to the related <a href="apidocs.html" class="page">Javadocs</a>.</p>
 </div>
+<div class="paragraph">
+<p>=== ActiveIf examples</p>
 </div>
-<div class="sect2">
-<h3 id="_activeif_examples"><a class="anchor" href="#_activeif_examples"></a>ActiveIf examples</h3>
-<div class="sect3">
-<h4 id="_example_1"><a class="anchor" href="#_example_1"></a>Example 1</h4>
+<div class="paragraph">
+<p>==== Example 1</p>
+</div>
 <div class="paragraph">
 <p>A common use of the ActiveIf condition consists in testing if a target property has a value. To do that, it is possible to test if the length of the property value is different from 0:</p>
 </div>
@@ -1658,9 +1718,9 @@ When using the programmatic API, metadata is prefixed with <code>tcomp::</code>.
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>==== Example 2</p>
 </div>
-<div class="sect3">
-<h4 id="_example_2"><a class="anchor" href="#_example_2"></a>Example 2</h4>
 <div class="paragraph">
 <p>The following example shows how to implement visibility conditions on several fields based on several checkbox configurations:</p>
 </div>
@@ -1726,19 +1786,16 @@ public class ActiveifProcessorProcessorConfiguration implements Serializable {
   }</code></pre>
 </div>
 </div>
+<div id="documentation-ui-hints" class="paragraph">
+<p>== Adding hints about the rendering</p>
 </div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="documentation-ui-hints"><a class="anchor" href="#documentation-ui-hints"></a>Adding hints about the rendering</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>In some cases, you may need to add metadata about the configuration to let the UI render that configuration properly.<br>
 For example, a password value that must be hidden and not a simple clear input box. For these cases - if you want to change the UI rendering - you can use a particular set of annotations:</p>
 </div>
-<div class="sect2">
-<h3 id="_defaultvalue"><a class="anchor" href="#_defaultvalue"></a>@DefaultValue</h3>
+<div class="paragraph">
+<p>= @DefaultValue</p>
+</div>
 <div class="paragraph">
 <p>Provide a default value the UI can use - only for primitive fields.</p>
 </div>
@@ -1749,8 +1806,9 @@ For example, a password value that must be hidden and not a simple clear input b
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="_snippets"><a class="anchor" href="#_snippets"></a>Snippets</h4>
+<div class="paragraph">
+<p>== Snippets</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">{
@@ -1758,10 +1816,9 @@ For example, a password value that must be hidden and not a simple clear input b
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>= @OptionsOrder</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_optionsorder"><a class="anchor" href="#_optionsorder"></a>@OptionsOrder</h3>
 <div class="paragraph">
 <p>Allows to sort a class properties.</p>
 </div>
@@ -1772,8 +1829,9 @@ For example, a password value that must be hidden and not a simple clear input b
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="_snippets_2"><a class="anchor" href="#_snippets_2"></a>Snippets</h4>
+<div class="paragraph">
+<p>== Snippets</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">{
@@ -1781,10 +1839,9 @@ For example, a password value that must be hidden and not a simple clear input b
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>= @AutoLayout</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_autolayout"><a class="anchor" href="#_autolayout"></a>@AutoLayout</h3>
 <div class="paragraph">
 <p>Request the rendered to do what it thinks is best.</p>
 </div>
@@ -1795,8 +1852,9 @@ For example, a password value that must be hidden and not a simple clear input b
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="_snippets_3"><a class="anchor" href="#_snippets_3"></a>Snippets</h4>
+<div class="paragraph">
+<p>== Snippets</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">{
@@ -1804,10 +1862,9 @@ For example, a password value that must be hidden and not a simple clear input b
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>= @GridLayout</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_gridlayout"><a class="anchor" href="#_gridlayout"></a>@GridLayout</h3>
 <div class="paragraph">
 <p>Advanced layout to place properties by row, this is exclusive with <code>@OptionsOrder</code>.</p>
 </div>
@@ -1830,8 +1887,9 @@ the logic to handle forms (gridlayout names) is to use the only layout if there 
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="_snippets_4"><a class="anchor" href="#_snippets_4"></a>Snippets</h4>
+<div class="paragraph">
+<p>== Snippets</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">{
@@ -1840,10 +1898,9 @@ the logic to handle forms (gridlayout names) is to use the only layout if there 
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>= @GridLayouts</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_gridlayouts"><a class="anchor" href="#_gridlayouts"></a>@GridLayouts</h3>
 <div class="paragraph">
 <p>Allow to configure multiple grid layouts on the same class, qualified with a classifier (name)</p>
 </div>
@@ -1854,8 +1911,9 @@ the logic to handle forms (gridlayout names) is to use the only layout if there 
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="_snippets_5"><a class="anchor" href="#_snippets_5"></a>Snippets</h4>
+<div class="paragraph">
+<p>== Snippets</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">{
@@ -1864,10 +1922,9 @@ the logic to handle forms (gridlayout names) is to use the only layout if there 
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>= @HorizontalLayout</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_horizontallayout"><a class="anchor" href="#_horizontallayout"></a>@HorizontalLayout</h3>
 <div class="paragraph">
 <p>Put on a configuration class it notifies the UI an horizontal layout is preferred.</p>
 </div>
@@ -1878,8 +1935,9 @@ the logic to handle forms (gridlayout names) is to use the only layout if there 
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="_snippets_6"><a class="anchor" href="#_snippets_6"></a>Snippets</h4>
+<div class="paragraph">
+<p>== Snippets</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">{
@@ -1887,10 +1945,9 @@ the logic to handle forms (gridlayout names) is to use the only layout if there 
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>= @VerticalLayout</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_verticallayout"><a class="anchor" href="#_verticallayout"></a>@VerticalLayout</h3>
 <div class="paragraph">
 <p>Put on a configuration class it notifies the UI a vertical layout is preferred.</p>
 </div>
@@ -1901,8 +1958,9 @@ the logic to handle forms (gridlayout names) is to use the only layout if there 
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="_snippets_7"><a class="anchor" href="#_snippets_7"></a>Snippets</h4>
+<div class="paragraph">
+<p>== Snippets</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">{
@@ -1910,10 +1968,9 @@ the logic to handle forms (gridlayout names) is to use the only layout if there 
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>= @Code</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_code"><a class="anchor" href="#_code"></a>@Code</h3>
 <div class="paragraph">
 <p>Mark a field as being represented by some code widget (vs textarea for instance).</p>
 </div>
@@ -1924,8 +1981,9 @@ the logic to handle forms (gridlayout names) is to use the only layout if there 
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="_snippets_8"><a class="anchor" href="#_snippets_8"></a>Snippets</h4>
+<div class="paragraph">
+<p>== Snippets</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">{
@@ -1933,10 +1991,9 @@ the logic to handle forms (gridlayout names) is to use the only layout if there 
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>= @Credential</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_credential"><a class="anchor" href="#_credential"></a>@Credential</h3>
 <div class="paragraph">
 <p>Mark a field as being a credential. It is typically used to hide the value in the UI.</p>
 </div>
@@ -1947,8 +2004,9 @@ the logic to handle forms (gridlayout names) is to use the only layout if there 
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="_snippets_9"><a class="anchor" href="#_snippets_9"></a>Snippets</h4>
+<div class="paragraph">
+<p>== Snippets</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">{
@@ -1956,10 +2014,9 @@ the logic to handle forms (gridlayout names) is to use the only layout if there 
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>= @DateTime</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_datetime"><a class="anchor" href="#_datetime"></a>@DateTime</h3>
 <div class="paragraph">
 <p>Mark a field as being a date. It supports and is <strong>implicit</strong> - which means you don&#8217;t need to put that annotation on the option - for <code>java.time.ZonedDateTime</code>, <code>java.time.LocalDate</code> and <code>java.time.LocalDateTime</code> and is unspecified for other types.</p>
 </div>
@@ -1970,8 +2027,9 @@ the logic to handle forms (gridlayout names) is to use the only layout if there 
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="_snippets_10"><a class="anchor" href="#_snippets_10"></a>Snippets</h4>
+<div class="paragraph">
+<p>== Snippets</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">{
@@ -2000,10 +2058,9 @@ the logic to handle forms (gridlayout names) is to use the only layout if there 
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>= @Structure</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_structure"><a class="anchor" href="#_structure"></a>@Structure</h3>
 <div class="paragraph">
 <p>Mark a List&lt;String&gt; or List&lt;Object&gt; field as being represented as the component data selector.</p>
 </div>
@@ -2014,8 +2071,9 @@ the logic to handle forms (gridlayout names) is to use the only layout if there 
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="_snippets_11"><a class="anchor" href="#_snippets_11"></a>Snippets</h4>
+<div class="paragraph">
+<p>== Snippets</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">{
@@ -2025,10 +2083,9 @@ the logic to handle forms (gridlayout names) is to use the only layout if there 
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>= @TextArea</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_textarea"><a class="anchor" href="#_textarea"></a>@TextArea</h3>
 <div class="paragraph">
 <p>Mark a field as being represented by a textarea(multiline text input).</p>
 </div>
@@ -2039,8 +2096,9 @@ the logic to handle forms (gridlayout names) is to use the only layout if there 
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="_snippets_12"><a class="anchor" href="#_snippets_12"></a>Snippets</h4>
+<div class="paragraph">
+<p>== Snippets</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">{
@@ -2066,13 +2124,9 @@ When using the programmatic API, metadata is prefixed with <code>tcomp::</code>.
 <div class="paragraph">
 <p>Target support should cover <code>org.talend.core.model.process.EParameterFieldType</code> but you need to ensure that the web renderer is able to handle the same widgets.</p>
 </div>
+<div class="paragraph">
+<p>== Implementation samples</p>
 </div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_implementation_samples"><a class="anchor" href="#_implementation_samples"></a>Implementation samples</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>You can find sample working components for each of the configuration cases below:</p>
 </div>
@@ -2131,41 +2185,20 @@ When using the programmatic API, metadata is prefixed with <code>tcomp::</code>.
 </li>
 </ul>
 </div>
+<div class="paragraph relatedlinks">
+<p>== Related articles
+- <a href="methodology-creating-components.html" class="page">Methodology for creating components</a>
+- <a href="tutorial-generate-project-using-starter.html" class="page">Generating a project using the starter</a>
+- <a href="component-define-input.html" class="page">Defining an input component</a>
+- <a href="component-define-processor-output.html" class="page">Defining a processor or output component</a>
+- <a href="component-registering.html" class="page">Registering a component</a>
+- <a href="component-internationalization.html" class="page">Internationalizing a component</a>
+- <a href="component-loading.html" class="page">Loading a component</a>
+- <a href="tutorial-configuration-sensitive-data.html" class="page">Masking sensitive data</a>
+- <a href="best-practices.html" class="page">Best practices</a></p>
 </div>
 </div>
-<div class="sect1 relatedlinks">
-<h2 id="_related_articles"><a class="anchor" href="#_related_articles"></a>Related articles</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="methodology-creating-components.html" class="page">Methodology for creating components</a></p>
-</li>
-<li>
-<p><a href="tutorial-generate-project-using-starter.html" class="page">Generating a project using the starter</a></p>
-</li>
-<li>
-<p><a href="component-define-input.html" class="page">Defining an input component</a></p>
-</li>
-<li>
-<p><a href="component-define-processor-output.html" class="page">Defining a processor or output component</a></p>
-</li>
-<li>
-<p><a href="component-registering.html" class="page">Registering a component</a></p>
-</li>
-<li>
-<p><a href="component-internationalization.html" class="page">Internationalizing a component</a></p>
-</li>
-<li>
-<p><a href="component-loading.html" class="page">Loading a component</a></p>
-</li>
-<li>
-<p><a href="tutorial-configuration-sensitive-data.html" class="page">Masking sensitive data</a></p>
-</li>
-<li>
-<p><a href="best-practices.html" class="page">Best practices</a></p>
-</li>
-</ul>
+</div>
 </div>
 </div>
 </div>
@@ -2177,7 +2210,7 @@ When using the programmatic API, metadata is prefixed with <code>tcomp::</code>.
 
                 <ul>
                     <li>
-                      <a class="article-side-actions-link" target="_blank" href="https://github.com/Talend/component-runtime/blob/component-runtime-1.30.0/documentation/src/main/antora/modules/ROOT/pages/component-configuration.adoc">
+                      <a class="article-side-actions-link" target="_blank" href="https://github.com/Talend/component-runtime/edit/component-runtime-1.30.0-branch/documentation/src/main/antora/modules/ROOT/pages/component-configuration.adoc">
                         <i class="fa fa-edit"></i> &nbsp; &nbsp; Suggest an edit
                       </a>
                     </li>
