@@ -15,7 +15,7 @@
     <meta name="description" content="Get an overview of the main steps to code the logic of your custom Talend Componit Kit components">
     <meta name="keywords" content="create, code, class, logic, layout, configuration, dev, overview">
     <meta name="generator" content="Antora 2.2.0">
-<meta name="date" content="2021-04-19T13:50:02.504Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
+<meta name="date" content="2021-04-20T08:20:19.200Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/idea.min.css" integrity="sha256-rD61BPsgKHzJPyg7vpXaYOw6tMYuY2fz1p9033NYeM8=" crossorigin="anonymous" />
@@ -355,6 +355,9 @@
     <a class="menu-link" href="component-define-processor-output.html">Defining a processor/output logic</a>
   </li>
   <li data-depth="2">
+    <a class="menu-link" href="component-define-standalone.html">Defining a standalone component logic</a>
+  </li>
+  <li data-depth="2">
     <a class="menu-link" href="component-configuration.html">Defining component configuration</a>
   </li>
   <li data-depth="2">
@@ -565,6 +568,9 @@
 </li>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor/output logic</a></p>
+</li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining a standalone component logic</a></p>
 </li>
 <li>
 <p><a href="component-configuration.html" class="page">Defining component layout and configuration</a></p>
@@ -800,6 +806,9 @@ You have to define a custom icon as follows:</p>
 </ul>
 </div>
 <div class="paragraph">
+<p><strong>Standalone</strong> component can be only a driver runner.</p>
+</div>
+<div class="paragraph">
 <p>The name of the component is defined there as well as a parameter of the component type.</p>
 </div>
 <div class="paragraph">
@@ -812,6 +821,9 @@ You have to define a custom icon as follows:</p>
 </li>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor or output component</a></p>
+</li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining an standalone component</a></p>
 </li>
 </ul>
 </div>
@@ -842,6 +854,16 @@ public class MyInput {
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Processor(name = "my_processor")
 public class MyProcessor {
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Driver runner example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@DriverRunner(name = "my_standalone")
+public class MyStandalone {
 }</code></pre>
 </div>
 </div>
@@ -887,6 +909,9 @@ public class MyProcessor {
 </li>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor or output component</a></p>
+</li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining a driver runner component</a></p>
 </li>
 <li>
 <p><a href="component-configuration.html" class="page">Defining component layout and configuration</a></p>
@@ -1940,6 +1965,71 @@ A combiner is the symmetric part of a partition mapper. It allows to aggregate r
 </li>
 <li>
 <p><a href="tutorial-configuration-sensitive-data.html" class="page">Masking sensitive data</a></p>
+</li>
+<li>
+<p><a href="best-practices.html" class="page">Best practices</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_defining_a_standalone_component_logic"><a class="anchor" href="#_defining_a_standalone_component_logic"></a>Defining a standalone component logic</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Standalone components are the components without input or output flows. They are designed to do actions without reading or processing any data. For example standalone components can be used to create indexes in databases.</p>
+</div>
+<div class="paragraph">
+<p>Before implementing the component logic and defining its layout and configurable fields, make sure you have specified its basic metadata, as detailed in <a href="component-registering.html" class="page">this document</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="_defining_a_driver_runner"><a class="anchor" href="#_defining_a_driver_runner"></a>Defining a driver runner</h3>
+<div class="sect3">
+<h4 id="driver-runner"><a class="anchor" href="#driver-runner"></a>What is a driver runner</h4>
+<div class="paragraph">
+<p>A <strong>Driver Runner</strong> (<code>DriverRunner</code>) is a standalone component which doesn&#8217;t process or return any data.</p>
+</div>
+<div class="paragraph">
+<p>A Driver runner must have a <code>@RunAtDriver</code> method without any parameter.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@RunAtDriver
+public void run() {
+    ...;
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2 relatedlinks">
+<h3 id="_related_articles_5"><a class="anchor" href="#_related_articles_5"></a>Related articles</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="methodology-creating-components.html" class="page">Methodology for creating components</a></p>
+</li>
+<li>
+<p><a href="tutorial-generate-project-using-starter.html" class="page">Generating a project using the starter</a></p>
+</li>
+<li>
+<p><a href="component-registering.html" class="page">Registering a component</a></p>
+</li>
+<li>
+<p><a href="component-execution.html" class="page">General component execution logic</a></p>
+</li>
+<li>
+<p><a href="component-configuration.html" class="page">Defining component layout and configuration</a></p>
+</li>
+<li>
+<p><a href="component-internationalization.html" class="page">Internationalizing a component</a></p>
+</li>
+<li>
+<p><a href="tutorial-configuration-sensitive-data.html" class="page">Masking sensitive data</a></p>
+</li>
+<li>
+<p><a href="component-implementing-streaming.html" class="page">Implementing streaming on a component</a></p>
 </li>
 <li>
 <p><a href="best-practices.html" class="page">Best practices</a></p>
@@ -3582,7 +3672,7 @@ When using the programmatic API, metadata is prefixed with <code>tcomp::</code>.
 </div>
 </div>
 <div class="sect2 relatedlinks">
-<h3 id="_related_articles_5"><a class="anchor" href="#_related_articles_5"></a>Related articles</h3>
+<h3 id="_related_articles_6"><a class="anchor" href="#_related_articles_6"></a>Related articles</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -3596,6 +3686,9 @@ When using the programmatic API, metadata is prefixed with <code>tcomp::</code>.
 </li>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor or output component</a></p>
+</li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining a standalone component</a></p>
 </li>
 <li>
 <p><a href="component-registering.html" class="page">Registering a component</a></p>
@@ -3834,7 +3927,7 @@ If you have a display name using the property path, it overrides the display nam
 </div>
 </div>
 <div class="sect2 relatedlinks">
-<h3 id="_related_articles_6"><a class="anchor" href="#_related_articles_6"></a>Related articles</h3>
+<h3 id="_related_articles_7"><a class="anchor" href="#_related_articles_7"></a>Related articles</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -4055,7 +4148,7 @@ public class RestApiConfiguration implements Serializable {
 </div>
 </div>
 <div class="sect2 relatedlinks">
-<h3 id="_related_articles_7"><a class="anchor" href="#_related_articles_7"></a>Related articles</h3>
+<h3 id="_related_articles_8"><a class="anchor" href="#_related_articles_8"></a>Related articles</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -4066,6 +4159,9 @@ public class RestApiConfiguration implements Serializable {
 </li>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor or output component</a></p>
+</li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining a standalone component</a></p>
 </li>
 <li>
 <p><a href="component-configuration.html" class="page">Configuring a component</a></p>
@@ -4228,7 +4324,7 @@ When writing tests for components, you can force the <code>maxBatchSize</code> p
 </div>
 </div>
 <div class="sect2 relatedlinks">
-<h3 id="_related_articles_8"><a class="anchor" href="#_related_articles_8"></a>Related articles</h3>
+<h3 id="_related_articles_9"><a class="anchor" href="#_related_articles_9"></a>Related articles</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -5373,7 +5469,7 @@ Call <code>mvn talend-component:help -Ddetail=true -Dgoal=&lt;goal-name&gt;</cod
 </div>
 </div>
 <div class="sect2 relatedlinks">
-<h3 id="_related_articles_9"><a class="anchor" href="#_related_articles_9"></a>Related articles</h3>
+<h3 id="_related_articles_10"><a class="anchor" href="#_related_articles_10"></a>Related articles</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -5478,7 +5574,7 @@ talendComponentKit {
 </div>
 </div>
 <div class="sect2 relatedlinks">
-<h3 id="_related_articles_10"><a class="anchor" href="#_related_articles_10"></a>Related articles</h3>
+<h3 id="_related_articles_11"><a class="anchor" href="#_related_articles_11"></a>Related articles</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -5764,7 +5860,7 @@ public class KafkaInput extends PTransform&lt;PBegin, PCollection&lt;Record&gt;&
 </div>
 </div>
 <div class="sect2 relatedlinks">
-<h3 id="_related_articles_11"><a class="anchor" href="#_related_articles_11"></a>Related articles</h3>
+<h3 id="_related_articles_12"><a class="anchor" href="#_related_articles_12"></a>Related articles</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6194,7 +6290,7 @@ public class JdbcPartitionMapper
 </div>
 </div>
 <div class="sect2 relatedlinks">
-<h3 id="_related_articles_12"><a class="anchor" href="#_related_articles_12"></a>Related articles</h3>
+<h3 id="_related_articles_13"><a class="anchor" href="#_related_articles_13"></a>Related articles</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6205,6 +6301,9 @@ public class JdbcPartitionMapper
 </li>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor or output component</a></p>
+</li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining a standalone component</a></p>
 </li>
 <li>
 <p><a href="component-configuration.html" class="page">Configuring a component</a></p>
@@ -6817,7 +6916,7 @@ In such a case, exclusions win over inclusions.
 </div>
 </div>
 <div class="sect2 relatedlinks">
-<h3 id="_related_articles_13"><a class="anchor" href="#_related_articles_13"></a>Related articles</h3>
+<h3 id="_related_articles_14"><a class="anchor" href="#_related_articles_14"></a>Related articles</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -6828,6 +6927,9 @@ In such a case, exclusions win over inclusions.
 </li>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor or output component</a></p>
+</li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining a standalone component</a></p>
 </li>
 <li>
 <p><a href="component-configuration.html" class="page">Defining component layout and configuration</a></p>

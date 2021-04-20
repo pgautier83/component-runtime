@@ -15,7 +15,7 @@
     <meta name="description" content="How to define component and component family metadata">
     <meta name="keywords" content="icon, component version, component name, family, category, metadata">
     <meta name="generator" content="Antora 2.2.0">
-<meta name="date" content="2021-04-19T13:50:01.509Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
+<meta name="date" content="2021-04-20T08:20:18.196Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/idea.min.css" integrity="sha256-rD61BPsgKHzJPyg7vpXaYOw6tMYuY2fz1p9033NYeM8=" crossorigin="anonymous" />
@@ -353,6 +353,9 @@
   </li>
   <li data-depth="2">
     <a class="menu-link" href="component-define-processor-output.html">Defining a processor/output logic</a>
+  </li>
+  <li data-depth="2">
+    <a class="menu-link" href="component-define-standalone.html">Defining a standalone component logic</a>
   </li>
   <li data-depth="2">
     <a class="menu-link" href="component-configuration.html">Defining component configuration</a>
@@ -729,6 +732,9 @@ You have to define a custom icon as follows:</p>
 </ul>
 </div>
 <div class="paragraph">
+<p><strong>Standalone</strong> component can be only a driver runner.</p>
+</div>
+<div class="paragraph">
 <p>The name of the component is defined there as well as a parameter of the component type.</p>
 </div>
 <div class="paragraph">
@@ -741,6 +747,9 @@ You have to define a custom icon as follows:</p>
 </li>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor or output component</a></p>
+</li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining an standalone component</a></p>
 </li>
 </ul>
 </div>
@@ -771,6 +780,16 @@ public class MyInput {
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Processor(name = "my_processor")
 public class MyProcessor {
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Driver runner example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@DriverRunner(name = "my_standalone")
+public class MyStandalone {
 }</code></pre>
 </div>
 </div>
@@ -820,6 +839,9 @@ public class MyProcessor {
 </li>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor or output component</a></p>
+</li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining a driver runner component</a></p>
 </li>
 <li>
 <p><a href="component-configuration.html" class="page">Defining component layout and configuration</a></p>

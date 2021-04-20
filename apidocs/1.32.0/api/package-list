@@ -36,3 +36,4 @@ org.talend.sdk.component.api.service.interceptor
 org.talend.sdk.component.api.service.record
 org.talend.sdk.component.api.service.schema
 org.talend.sdk.component.api.service.update
+org.talend.sdk.component.api.standalone

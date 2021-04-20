@@ -11,7 +11,7 @@
     <title>Talend Component Kit Developer Guide :: Talend Component Kit Developer Reference Guide</title>
     <link rel="canonical" href="https://talend.github.io/component-runtime/main/1.32.0/all-in-one.html">
     <meta name="generator" content="Antora 2.2.0">
-<meta name="date" content="2021-04-19T13:50:00.868Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
+<meta name="date" content="2021-04-20T08:20:17.478Z" scheme="YYYY-MM-DDTHH:mm:ss.sssZ">
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/idea.min.css" integrity="sha256-rD61BPsgKHzJPyg7vpXaYOw6tMYuY2fz1p9033NYeM8=" crossorigin="anonymous" />
@@ -351,6 +351,9 @@
     <a class="menu-link" href="component-define-processor-output.html">Defining a processor/output logic</a>
   </li>
   <li data-depth="2">
+    <a class="menu-link" href="component-define-standalone.html">Defining a standalone component logic</a>
+  </li>
+  <li data-depth="2">
     <a class="menu-link" href="component-configuration.html">Defining component configuration</a>
   </li>
   <li data-depth="2">
@@ -647,7 +650,7 @@
 <div class="sect2">
 <h3 id="_component_types"><a class="anchor" href="#_component_types"></a>Component types</h3>
 <div class="paragraph">
-<p>There are three types of components, each type coming with its specificities, especially on the runtime side.</p>
+<p>There are four types of components, each type coming with its specificities, especially on the runtime side.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -688,7 +691,20 @@
 <p>The execution logic of the component, describing how to process each records or batches of records it receives. This logic is defined in an <code>Output</code> class. Unlike processors, output components are the last components of the execution and return no data.</p>
 </li>
 <li>
-<p>The layout of the component and the configuration that the end-user will need to provide when using the component, defined by a <code>Configuration</code> class. All output components must have a dataset specified in their configuration, and every dataset must use a datastore.</p>
+<p>The layout of the component and the configuration that the end-user will need to provide when using the component, defined by a <code>Configuration</code> class. All input components must have a dataset specified in their configuration, and every dataset must use a datastore.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Standalone components: Make a call to the service or run a query on the database. A standalone component is made of:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>The execution logic of the component, represented by a <code>DriverRunner</code> class.</p>
+</li>
+<li>
+<p>The layout of the component and the configuration that the end-user will need to provide when using the component, defined by a <code>Configuration</code> class. All input components must have a datastore or dataset specified in their configuration, and every dataset must use a datastore.</p>
 </li>
 </ul>
 </div>
@@ -1107,6 +1123,9 @@ The job is executed. You can observe in the console that each of the 10 generate
 </li>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor/output logic</a></p>
+</li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining a standalone component logic</a></p>
 </li>
 <li>
 <p><a href="component-internationalization.html" class="page">Internationalizing a component</a></p>
@@ -2216,6 +2235,9 @@ Import the project to your favorite IDE to start the implementation.</p>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor or output component</a></p>
 </li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining a processor or output component</a></p>
+</li>
 </ul>
 </div>
 </div>
@@ -2279,6 +2301,9 @@ For more information about the Talend Component Kit starter, check <a href="tuto
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor or output component</a></p>
 </li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining a standalone component</a></p>
+</li>
 </ul>
 </div>
 </div>
@@ -2301,6 +2326,9 @@ For more information about the Talend Component Kit starter, check <a href="tuto
 </li>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor/output logic</a></p>
+</li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining a standalone component logic</a></p>
 </li>
 <li>
 <p><a href="component-configuration.html" class="page">Defining component layout and configuration</a></p>
@@ -2533,6 +2561,9 @@ You have to define a custom icon as follows:</p>
 </ul>
 </div>
 <div class="paragraph">
+<p><strong>Standalone</strong> component can be only a driver runner.</p>
+</div>
+<div class="paragraph">
 <p>The name of the component is defined there as well as a parameter of the component type.</p>
 </div>
 <div class="paragraph">
@@ -2545,6 +2576,9 @@ You have to define a custom icon as follows:</p>
 </li>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor or output component</a></p>
+</li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining an standalone component</a></p>
 </li>
 </ul>
 </div>
@@ -2575,6 +2609,16 @@ public class MyInput {
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Processor(name = "my_processor")
 public class MyProcessor {
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Driver runner example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@DriverRunner(name = "my_standalone")
+public class MyStandalone {
 }</code></pre>
 </div>
 </div>
@@ -2620,6 +2664,9 @@ public class MyProcessor {
 </li>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor or output component</a></p>
+</li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining a driver runner component</a></p>
 </li>
 <li>
 <p><a href="component-configuration.html" class="page">Defining component layout and configuration</a></p>
@@ -3667,6 +3714,69 @@ A combiner is the symmetric part of a partition mapper. It allows to aggregate r
 </li>
 <li>
 <p><a href="tutorial-configuration-sensitive-data.html" class="page">Masking sensitive data</a></p>
+</li>
+<li>
+<p><a href="best-practices.html" class="page">Best practices</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_defining_a_standalone_component_logic"><a class="anchor" href="#_defining_a_standalone_component_logic"></a>Defining a standalone component logic</h3>
+<div class="paragraph">
+<p>Standalone components are the components without input or output flows. They are designed to do actions without reading or processing any data. For example standalone components can be used to create indexes in databases.</p>
+</div>
+<div class="paragraph">
+<p>Before implementing the component logic and defining its layout and configurable fields, make sure you have specified its basic metadata, as detailed in <a href="component-registering.html" class="page">this document</a>.</p>
+</div>
+<div class="sect3">
+<h4 id="_defining_a_driver_runner"><a class="anchor" href="#_defining_a_driver_runner"></a>Defining a driver runner</h4>
+<div class="sect4">
+<h5 id="driver-runner"><a class="anchor" href="#driver-runner"></a>What is a driver runner</h5>
+<div class="paragraph">
+<p>A <strong>Driver Runner</strong> (<code>DriverRunner</code>) is a standalone component which doesn&#8217;t process or return any data.</p>
+</div>
+<div class="paragraph">
+<p>A Driver runner must have a <code>@RunAtDriver</code> method without any parameter.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@RunAtDriver
+public void run() {
+    ...;
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3 relatedlinks">
+<h4 id="_related_articles_10"><a class="anchor" href="#_related_articles_10"></a>Related articles</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="methodology-creating-components.html" class="page">Methodology for creating components</a></p>
+</li>
+<li>
+<p><a href="tutorial-generate-project-using-starter.html" class="page">Generating a project using the starter</a></p>
+</li>
+<li>
+<p><a href="component-registering.html" class="page">Registering a component</a></p>
+</li>
+<li>
+<p><a href="component-execution.html" class="page">General component execution logic</a></p>
+</li>
+<li>
+<p><a href="component-configuration.html" class="page">Defining component layout and configuration</a></p>
+</li>
+<li>
+<p><a href="component-internationalization.html" class="page">Internationalizing a component</a></p>
+</li>
+<li>
+<p><a href="tutorial-configuration-sensitive-data.html" class="page">Masking sensitive data</a></p>
+</li>
+<li>
+<p><a href="component-implementing-streaming.html" class="page">Implementing streaming on a component</a></p>
 </li>
 <li>
 <p><a href="best-practices.html" class="page">Best practices</a></p>
@@ -5307,7 +5417,7 @@ When using the programmatic API, metadata is prefixed with <code>tcomp::</code>.
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_10"><a class="anchor" href="#_related_articles_10"></a>Related articles</h4>
+<h4 id="_related_articles_11"><a class="anchor" href="#_related_articles_11"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -5321,6 +5431,9 @@ When using the programmatic API, metadata is prefixed with <code>tcomp::</code>.
 </li>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor or output component</a></p>
+</li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining a standalone component</a></p>
 </li>
 <li>
 <p><a href="component-registering.html" class="page">Registering a component</a></p>
@@ -5555,7 +5668,7 @@ If you have a display name using the property path, it overrides the display nam
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_11"><a class="anchor" href="#_related_articles_11"></a>Related articles</h4>
+<h4 id="_related_articles_12"><a class="anchor" href="#_related_articles_12"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -5772,7 +5885,7 @@ public class RestApiConfiguration implements Serializable {
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_12"><a class="anchor" href="#_related_articles_12"></a>Related articles</h4>
+<h4 id="_related_articles_13"><a class="anchor" href="#_related_articles_13"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -5783,6 +5896,9 @@ public class RestApiConfiguration implements Serializable {
 </li>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor or output component</a></p>
+</li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining a standalone component</a></p>
 </li>
 <li>
 <p><a href="component-configuration.html" class="page">Configuring a component</a></p>
@@ -5943,7 +6059,7 @@ When writing tests for components, you can force the <code>maxBatchSize</code> p
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_13"><a class="anchor" href="#_related_articles_13"></a>Related articles</h4>
+<h4 id="_related_articles_14"><a class="anchor" href="#_related_articles_14"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -7084,7 +7200,7 @@ Call <code>mvn talend-component:help -Ddetail=true -Dgoal=&lt;goal-name&gt;</cod
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_14"><a class="anchor" href="#_related_articles_14"></a>Related articles</h4>
+<h4 id="_related_articles_15"><a class="anchor" href="#_related_articles_15"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -7187,7 +7303,7 @@ talendComponentKit {
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_15"><a class="anchor" href="#_related_articles_15"></a>Related articles</h4>
+<h4 id="_related_articles_16"><a class="anchor" href="#_related_articles_16"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -7471,7 +7587,7 @@ public class KafkaInput extends PTransform&lt;PBegin, PCollection&lt;Record&gt;&
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_16"><a class="anchor" href="#_related_articles_16"></a>Related articles</h4>
+<h4 id="_related_articles_17"><a class="anchor" href="#_related_articles_17"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -7899,7 +8015,7 @@ public class JdbcPartitionMapper
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_17"><a class="anchor" href="#_related_articles_17"></a>Related articles</h4>
+<h4 id="_related_articles_18"><a class="anchor" href="#_related_articles_18"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -7910,6 +8026,9 @@ public class JdbcPartitionMapper
 </li>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor or output component</a></p>
+</li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining a standalone component</a></p>
 </li>
 <li>
 <p><a href="component-configuration.html" class="page">Configuring a component</a></p>
@@ -8520,7 +8639,7 @@ In such a case, exclusions win over inclusions.
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_18"><a class="anchor" href="#_related_articles_18"></a>Related articles</h4>
+<h4 id="_related_articles_19"><a class="anchor" href="#_related_articles_19"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -8531,6 +8650,9 @@ In such a case, exclusions win over inclusions.
 </li>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor or output component</a></p>
+</li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining a standalone component</a></p>
 </li>
 <li>
 <p><a href="component-configuration.html" class="page">Defining component layout and configuration</a></p>
@@ -8730,7 +8852,7 @@ Add the <code>junit-jupiter-params</code> dependency to benefit from this featur
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_19"><a class="anchor" href="#_related_articles_19"></a>Related articles</h4>
+<h4 id="_related_articles_20"><a class="anchor" href="#_related_articles_20"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -9571,7 +9693,7 @@ void run() throws Exception {
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_20"><a class="anchor" href="#_related_articles_20"></a>Related articles</h4>
+<h4 id="_related_articles_21"><a class="anchor" href="#_related_articles_21"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -9605,7 +9727,7 @@ void run() throws Exception {
 <p>Check <a href="https://beam.apache.org/contribute/testing/" class="bare">beam.apache.org/contribute/testing/</a> for more details.</p>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_21"><a class="anchor" href="#_related_articles_21"></a>Related articles</h4>
+<h4 id="_related_articles_22"><a class="anchor" href="#_related_articles_22"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -9866,7 +9988,7 @@ class TheComponentTest {
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_22"><a class="anchor" href="#_related_articles_22"></a>Related articles</h4>
+<h4 id="_related_articles_23"><a class="anchor" href="#_related_articles_23"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -9922,7 +10044,7 @@ Even if you do not use Maven on the platform, you can generate the <code>setting
 </table>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_23"><a class="anchor" href="#_related_articles_23"></a>Related articles</h4>
+<h4 id="_related_articles_24"><a class="anchor" href="#_related_articles_24"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -10016,7 +10138,7 @@ An alternative to data generation can be to import <em>real</em> data and use Ta
 <p>If you are using JUnit 5, you can have a look at <a href="https://glytching.github.io/junit-extensions/randomBeans" class="bare">glytching.github.io/junit-extensions/randomBeans</a>.</p>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_24"><a class="anchor" href="#_related_articles_24"></a>Related articles</h4>
+<h4 id="_related_articles_25"><a class="anchor" href="#_related_articles_25"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -10332,7 +10454,7 @@ You can use <code>ViewsMappingTransform</code> or <code>CoGroupByKeyResultMappin
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_25"><a class="anchor" href="#_related_articles_25"></a>Related articles</h4>
+<h4 id="_related_articles_26"><a class="anchor" href="#_related_articles_26"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -10858,7 +10980,7 @@ You can use the <code>Response</code> wrapper, or not.
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_26"><a class="anchor" href="#_related_articles_26"></a>Related articles</h4>
+<h4 id="_related_articles_27"><a class="anchor" href="#_related_articles_27"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -10961,7 +11083,7 @@ Translator.localized = Some other message with string {0}</code></pre>
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_27"><a class="anchor" href="#_related_articles_27"></a>Related articles</h4>
+<h4 id="_related_articles_28"><a class="anchor" href="#_related_articles_28"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -11404,7 +11526,7 @@ You can combine the <code>$lang</code> option with the <code>@Internationalized<
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_28"><a class="anchor" href="#_related_articles_28"></a>Related articles</h4>
+<h4 id="_related_articles_29"><a class="anchor" href="#_related_articles_29"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -11502,7 +11624,7 @@ The <code>findAnnotation</code> annotation, inherited from <code>InterceptorHand
 </table>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_29"><a class="anchor" href="#_related_articles_29"></a>Related articles</h4>
+<h4 id="_related_articles_30"><a class="anchor" href="#_related_articles_30"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -11549,7 +11671,7 @@ public @interface MyLayout {
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_30"><a class="anchor" href="#_related_articles_30"></a>Related articles</h4>
+<h4 id="_related_articles_31"><a class="anchor" href="#_related_articles_31"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -11693,7 +11815,7 @@ You can use a Snapshot of the version under development using the <code>-SNAPSHO
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_31"><a class="anchor" href="#_related_articles_31"></a>Related articles</h4>
+<h4 id="_related_articles_32"><a class="anchor" href="#_related_articles_32"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -11986,7 +12108,7 @@ You still need to add and remove the components to see the changes.
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_32"><a class="anchor" href="#_related_articles_32"></a>Related articles</h4>
+<h4 id="_related_articles_33"><a class="anchor" href="#_related_articles_33"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -14722,7 +14844,7 @@ The job is executed. You can observe in the console that each of the 10 generate
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_33"><a class="anchor" href="#_related_articles_33"></a>Related articles</h4>
+<h4 id="_related_articles_34"><a class="anchor" href="#_related_articles_34"></a>Related articles</h4>
 <div class="paragraph">
 <p>To go further and start implementing more complex components, you can refer to the following documents:</p>
 </div>
@@ -14748,6 +14870,9 @@ The job is executed. You can observe in the console that each of the 10 generate
 </li>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor/output logic</a></p>
+</li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining a standalone component logic</a></p>
 </li>
 <li>
 <p><a href="component-internationalization.html" class="page">Internationalizing a component</a></p>
@@ -15268,7 +15393,7 @@ Import the project to your favorite IDE to start the implementation.</p>
 </div>
 </div>
 <div class="sect3 relatedlinks">
-<h4 id="_related_articles_34"><a class="anchor" href="#_related_articles_34"></a>Related articles</h4>
+<h4 id="_related_articles_35"><a class="anchor" href="#_related_articles_35"></a>Related articles</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -15288,6 +15413,9 @@ Import the project to your favorite IDE to start the implementation.</p>
 </li>
 <li>
 <p><a href="component-define-processor-output.html" class="page">Defining a processor or output component</a></p>
+</li>
+<li>
+<p><a href="component-define-standalone.html" class="page">Defining a processor or output component</a></p>
 </li>
 </ul>
 </div>
